@@ -51,4 +51,8 @@ To load a video as Uint8List do:
     debugPrint(videoData.toString());
 ```
 
-After that you can upload your video somewhere hosted and retreive the network url to play it.
+After that you can upload your video somewhere hosted and retreive the network url to play it. 
+
+### MediaInfos
+
+* The methods ```getVideoInfo``` and ```getImageInfo``` are also available and you should use them to save the original fileName and mediaType.
