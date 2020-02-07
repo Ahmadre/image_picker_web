@@ -1,0 +1,26 @@
+name: image_picker_web
+description: A new flutter plugin project.
+version: 0.0.3
+author: Rebar Ahmad <rebar.ahmad@gmail.com>
+homepage: https://github.com/Ahmadre
+repository: https://github.com/Ahmadre/image_picker_web
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      web:
+        pluginClass: ImagePickerWeb
+        fileName: image_picker_web.dart
