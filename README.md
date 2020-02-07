@@ -1,14 +1,16 @@
-# image_picker_web
+# ImagePickerWeb
 
-A new flutter plugin project.
+This Web-Plugin allows Flutter Web to pick images (as Widget or Uint8List) and videos (as Uint8List).
+
+[https://github.com/Ahmadre/image_picker_web/blob/master/assets/exampleupload.gif]()
+
+### Disclaimer for Videos
+* Till now [Feb. 2020] it's not possible (due to security reasons) to load a local video file (see also video_player_web). But you can retreive the bytes and upload them somewhere and play it as a network source.
 
 ## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+Add ```image_picker_web``` to your pubspec.yaml:
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```yaml
+    image_picker_web: any
+```
