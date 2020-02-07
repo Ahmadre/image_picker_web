@@ -1,3 +1,7 @@
+## 0.0.5 - [07.02.2020]
+
+* Add credits and ```MediaInfo```
+
 ## 0.0.4 - [07.02.2020]
 
 * Add full example app
