@@ -56,3 +56,8 @@ After that you can upload your video somewhere hosted and retreive the network u
 ### MediaInfos
 
 * The methods ```getVideoInfo``` and ```getImageInfo``` are also available and you should use them to save the original fileName and mediaType.
+
+## Support
+Like my work? You can support me here:
+
+<a href="https://www.buymeacoffee.com/wyXvWnH" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-green.png" alt="Buy Me A Coffee" width="200px"></a>
