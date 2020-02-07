@@ -1,6 +1,6 @@
 # ImagePickerWeb
 
-This Web-Plugin allows Flutter Web to pick images (as Widget or Uint8List) and videos (as Uint8List).
+This Web-Plugin allows Flutter Web to pick images (as Widget or Uint8List) and videos (as Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
 ![ExampleGif](https://github.com/Ahmadre/image_picker_web/blob/master/assets/exampleupload.gif)
 
