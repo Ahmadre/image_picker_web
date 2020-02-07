@@ -45,10 +45,10 @@ You can also load only the bytes by setting ```asUint8List``` to ```true```:
 To load a video as Uint8List do:
 
 ```dart
-    Uint8List videoMetaData = await ImagePickerWeb.getVideo;
+    Uint8List videoData = await ImagePickerWeb.getVideo;
 
     debugPrint('---Picked Video Bytes---');
-    debugPrint(videoMetaData.toString());
+    debugPrint(videoData.toString());
 ```
 
 After that you can upload your video somewhere hosted and retreive the network url to play it.
