@@ -14,3 +14,41 @@ Add ```image_picker_web``` to your pubspec.yaml:
 ```yaml
     image_picker_web: any
 ```
+
+## Picking Images
+
+To load an image do:
+
+```dart
+    Image fromPicker = await ImagePickerWeb.getImage();
+
+    if (fromPicker != null) {
+      setState(() {
+        pickedImage = fromPicker;
+      });
+    }
+```
+
+You can also load only the bytes by setting ```asUint8List``` to ```true```:
+
+```dart
+    Uint8List bytesFromPicker =
+        await ImagePickerWeb.getImage(asUint8List: true);
+
+    if (bytesFromPicker != null) {
+      debugPrint(bytesFromPicker.toString());
+    }
+```
+
+## Picking Videos
+
+To load a video as Uint8List do:
+
+```dart
+    Uint8List videoMetaData = await ImagePickerWeb.getVideo;
+
+    debugPrint('---Picked Video Bytes---');
+    debugPrint(videoMetaData.toString());
+```
+
+After that you can upload your video somewhere hosted and retreive the network url to play it.
