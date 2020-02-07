@@ -1,6 +1,6 @@
 name: image_picker_web
-description: A new flutter plugin project.
-version: 0.0.5
+description: Flutter Web Plugin to pick Images (as Widget or Uint8List) and Videos (as Uint8List)
+version: 0.1.6
 author: Rebar Ahmad <rebar.ahmad@gmail.com>
 homepage: https://github.com/Ahmadre
 repository: https://github.com/Ahmadre/image_picker_web
