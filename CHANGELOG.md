@@ -1,4 +1,4 @@
-## 1.0.1 - [20.03.2020]
+## 1.0.3 - [20.03.2020]
 
 * Refactor Models
     - Add Image and Video Enums
