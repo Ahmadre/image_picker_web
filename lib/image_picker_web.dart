@@ -1,8 +1,9 @@
 library image_picker_web;
+
 export 'src/Models/Types.dart';
 
 import 'dart:convert';
-
+import 'dart:html' as html;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -17,8 +18,6 @@ class ImagePickerWeb {
     final instance = WebImagePicker();
     channel.setMethodCallHandler((call) async {
       switch (call.method) {
-        case 'pickFile':
-          return await instance.pickFile(call.arguments);
         case 'pickImage':
           return await instance.pickImage();
         case 'pickVideo':
@@ -32,14 +31,23 @@ class ImagePickerWeb {
   static const MethodChannel _methodChannel =
       const MethodChannel('image_picker_web');
 
+  Future<html.File> _pickFile(String type) async {
+    final html.FileUploadInputElement input = html.FileUploadInputElement();
+    input..accept = '$type/*';
+    input.click();
+    await input.onChange.first;
+    if (input.files.isEmpty) return null;
+    return input.files[0];
+  }
+
   static Future<dynamic> getImage({@required ImageType outputType}) async {
     if (!(outputType is ImageType)) {
-      throw ArgumentError('outputType has to be from Type: ImageType if you call getImage()');
+      throw ArgumentError(
+          'outputType has to be from Type: ImageType if you call getImage()');
     }
     switch (outputType) {
       case ImageType.file:
-        return await _methodChannel
-            .invokeMapMethod<String, dynamic>('pickFile', ['image']);
+        return await ImagePickerWeb()._pickFile('image');
         break;
       case ImageType.bytes:
         final data =
@@ -74,12 +82,12 @@ class ImagePickerWeb {
 
   static Future<dynamic> getVideo({@required VideoType outputType}) async {
     if (!(outputType is VideoType)) {
-      throw ArgumentError('outputType has to be from Type: VideoType if you call getVideo()');
+      throw ArgumentError(
+          'outputType has to be from Type: VideoType if you call getVideo()');
     }
     switch (outputType) {
       case VideoType.file:
-        return await _methodChannel
-            .invokeMapMethod<String, dynamic>('pickFile', ['video']);
+        return await ImagePickerWeb()._pickFile('video');
         break;
       case VideoType.bytes:
         final data =

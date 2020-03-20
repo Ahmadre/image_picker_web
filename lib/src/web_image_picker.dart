@@ -2,15 +2,6 @@ import 'dart:async';
 import 'dart:html' as html;
 
 class WebImagePicker {
-  Future<html.File> pickFile(String type) async {
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
-    input..accept = '$type/*';
-    input.click();
-    await input.onChange.first;
-    if (input.files.isEmpty) return null;
-    return input.files[0];
-  }
-
   Future<Map<String, dynamic>> pickImage() async {
     final Map<String, dynamic> data = {};
     final html.FileUploadInputElement input = html.FileUploadInputElement();
