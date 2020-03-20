@@ -1,3 +1,10 @@
+## 0.9.5 - [20.03.2020]
+
+* Refactor Models
+    - Add Image and Video Enums
+* Add `pickFile` for images and videos (automatically filters types for platform picker)
+* Add `outputType` for `getImage` and `getVideo`
+
 ## 0.1.6 - [07.02.2020]
 
 * Add description

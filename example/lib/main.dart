@@ -23,14 +23,14 @@ class _MyAppState extends State<MyApp> {
     /// You can set the parameter asUint8List to true
     /// to get only the bytes from the image
     /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(asUint8List: true);
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
     if (bytesFromPicker != null) {
       debugPrint(bytesFromPicker.toString());
     } */
 
     /// Default behavior would be getting the Image.memory
-    Image fromPicker = await ImagePickerWeb.getImage();
+    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
     if (fromPicker != null) {
       setState(() {
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   pickVideo() async {
-    final videoMetaData = await ImagePickerWeb.getVideo;
+    final videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
     debugPrint('---Picked Video Bytes---');
     debugPrint(videoMetaData.toString());
