@@ -20,7 +20,7 @@ Add ```image_picker_web``` to your pubspec.yaml:
 To load an image do:
 
 ```dart
-    Image fromPicker = await ImagePickerWeb.getImage();
+    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
     if (fromPicker != null) {
       setState(() {
@@ -33,7 +33,7 @@ You can also load only the bytes by setting ```asUint8List``` to ```true```:
 
 ```dart
     Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(asUint8List: true);
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
     if (bytesFromPicker != null) {
       debugPrint(bytesFromPicker.toString());
@@ -42,10 +42,19 @@ You can also load only the bytes by setting ```asUint8List``` to ```true```:
 
 ## Picking Videos
 
+To load a video as html.File do:
+
+```dart
+    html.File videoFile = await ImagePickerWeb.getVideo(outputType: VideoType.file);
+
+    debugPrint('---Picked Video File---');
+    debugPrint((videoFile as html.File).name.toString());
+```
+
 To load a video as Uint8List do:
 
 ```dart
-    Uint8List videoData = await ImagePickerWeb.getVideo;
+    Uint8List videoData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
     debugPrint('---Picked Video Bytes---');
     debugPrint(videoData.toString());
