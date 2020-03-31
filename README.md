@@ -71,7 +71,7 @@ To load a video as Uint8List do:
     debugPrint(videoData.toString());
 ```
 
-Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as as html.File!
+Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as html.File!
 
 After you uploaded your video somewhere hosted, you can retreive the network url to play it. 
 
