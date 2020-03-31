@@ -1,6 +1,6 @@
 name: image_picker_web
 description: Flutter Web Plugin to pick Images (as Widget, File or Uint8List) and Videos (as File or Uint8List)
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/Ahmadre
 repository: https://github.com/Ahmadre/image_picker_web
 

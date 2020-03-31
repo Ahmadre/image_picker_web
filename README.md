@@ -5,7 +5,7 @@ This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List)
 ![ExampleGif](https://github.com/Ahmadre/image_picker_web/blob/master/assets/exampleupload.gif)
 
 ### Disclaimer for Videos
-* Till now [Feb. 2020] it's not possible (due to security reasons) to load a local video file (see also video_player_web). But you can retreive the bytes and upload them somewhere and play it as a network source.
+* Till now [Mar. 2020] it's not possible (due to security reasons) to play a local video file (see also video_player_web). But you can retreive the file and upload them somewhere and play it as a network source.
 
 ## Getting Started
 
@@ -71,13 +71,10 @@ To load a video as Uint8List do:
     debugPrint(videoData.toString());
 ```
 
-After that you can upload your video somewhere hosted and retreive the network url to play it. 
+Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resultion videos as as html.File!
+
+After you uploaded your video somewhere hosted, you can retreive the network url to play it. 
 
 ### MediaInfos
 
-* The methods ```getVideoInfo``` and ```getImageInfo``` are also available and you should use them to save the original fileName and mediaType.
-
-## Support
-Like my work? You can support me here:
-
-<a href="https://www.buymeacoffee.com/wyXvWnH" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/lato-green.png" alt="Buy Me A Coffee" width="200px"></a>
+* The methods ```getVideoInfo``` and ```getImageInfo``` are also available and you can use them to retreive further informations about your picked source.

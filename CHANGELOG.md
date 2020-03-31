@@ -1,3 +1,7 @@
+## 1.0.4 - [31.03.2020]
+
+* Update pub readme
+
 ## 1.0.3 - [20.03.2020]
 
 * Refactor Models
