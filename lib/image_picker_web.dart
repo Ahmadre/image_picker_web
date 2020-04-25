@@ -13,8 +13,7 @@ import 'src/Models/Types.dart';
 
 class ImagePickerWeb {
   static void registerWith(Registrar registrar) {
-    final channel = MethodChannel(
-        'image_picker_web', const StandardMethodCodec(), registrar.messenger);
+    final channel = MethodChannel('image_picker_web', const StandardMethodCodec(), registrar.messenger);
     final instance = WebImagePicker();
     channel.setMethodCallHandler((call) async {
       switch (call.method) {
@@ -28,8 +27,7 @@ class ImagePickerWeb {
     });
   }
 
-  static const MethodChannel _methodChannel =
-      const MethodChannel('image_picker_web');
+  static const MethodChannel _methodChannel = const MethodChannel('image_picker_web');
 
   Future<html.File> _pickFile(String type) async {
     final html.FileUploadInputElement input = html.FileUploadInputElement();
@@ -42,22 +40,19 @@ class ImagePickerWeb {
 
   static Future<dynamic> getImage({@required ImageType outputType}) async {
     if (!(outputType is ImageType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: ImageType if you call getImage()');
+      throw ArgumentError('outputType has to be from Type: ImageType if you call getImage()');
     }
     switch (outputType) {
       case ImageType.file:
         return await ImagePickerWeb()._pickFile('image');
         break;
       case ImageType.bytes:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
+        final data = await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
         final imageData = base64.decode(data['data']);
         return imageData;
         break;
       case ImageType.widget:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
+        final data = await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
         final imageName = data['name'];
         final imageData = base64.decode(data['data']);
         return Image.memory(imageData, semanticLabel: imageName);
@@ -69,11 +64,9 @@ class ImagePickerWeb {
   }
 
   static Future<MediaInfo> get getImageInfo async {
-    final data =
-        await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
+    final data = await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
     MediaInfo _webImageInfo = MediaInfo();
     _webImageInfo.fileName = data['name'];
-    _webImageInfo.filePath = data['path'];
     _webImageInfo.base64 = data['data'];
     _webImageInfo.base64WithScheme = data['data_scheme'];
     _webImageInfo.data = base64.decode(data['data']);
@@ -82,16 +75,14 @@ class ImagePickerWeb {
 
   static Future<dynamic> getVideo({@required VideoType outputType}) async {
     if (!(outputType is VideoType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: VideoType if you call getVideo()');
+      throw ArgumentError('outputType has to be from Type: VideoType if you call getVideo()');
     }
     switch (outputType) {
       case VideoType.file:
         return await ImagePickerWeb()._pickFile('video');
         break;
       case VideoType.bytes:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+        final data = await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
         final imageData = base64.decode(data['data']);
         return imageData;
         break;
@@ -102,11 +93,9 @@ class ImagePickerWeb {
   }
 
   static Future<MediaInfo> get getVideoInfo async {
-    final data =
-        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+    final data = await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
     MediaInfo _webVideoInfo = MediaInfo();
     _webVideoInfo.fileName = data['name'];
-    _webVideoInfo.filePath = data['path'];
     _webVideoInfo.base64 = data['data'];
     _webVideoInfo.base64WithScheme = data['data_scheme'];
     _webVideoInfo.data = base64.decode(data['data']);

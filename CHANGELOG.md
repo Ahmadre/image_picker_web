@@ -1,3 +1,8 @@
+## 1.0.8 - [25.04.2020]
+
+* Remove `path` attribute from `MediaInfo`
+    - Answers: [#5](https://github.com/Ahmadre/image_picker_web/issues/5)
+
 ## 1.0.6 - [31.03.2020]
 
 * Update pub readme

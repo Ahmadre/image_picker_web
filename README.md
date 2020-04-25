@@ -47,7 +47,7 @@ Setting ```outputType``` to ```ImageType.file```:
         await ImagePickerWeb.getImage(outputType: ImageType.file);
 
     if (imageFile != null) {
-      debugPrint((videoFile as html.File).name.toString());
+      debugPrint(imageFile.name.toString());
     }
 ```
 
@@ -59,7 +59,7 @@ To load a video as html.File do:
     html.File videoFile = await ImagePickerWeb.getVideo(outputType: VideoType.file);
 
     debugPrint('---Picked Video File---');
-    debugPrint((videoFile as html.File).name.toString());
+    debugPrint(videoFile.name.toString());
 ```
 
 To load a video as Uint8List do:

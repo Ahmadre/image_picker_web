@@ -13,15 +13,12 @@ class WebImagePicker {
     reader.readAsDataUrl(input.files[0]);
     await reader.onLoad.first;
     final encoded = reader.result as String;
-    final stripped =
-        encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
-    final videoName = input.files?.first?.name;
-    final videoPath = input.files?.first?.relativePath;
+    final stripped = encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
+    final imageName = input.files?.first?.name;
     data.addAll({
-      'name': videoName,
+      'name': imageName,
       'data': stripped,
-      'data_scheme': encoded,
-      'path': videoPath
+      'data_scheme': encoded
     });
     return data;
   }
@@ -37,16 +34,9 @@ class WebImagePicker {
     reader.readAsDataUrl(input.files[0]);
     await reader.onLoad.first;
     final encoded = reader.result as String;
-    final stripped =
-        encoded.replaceFirst(RegExp(r'data:video/[^;]+;base64,'), '');
+    final stripped = encoded.replaceFirst(RegExp(r'data:video/[^;]+;base64,'), '');
     final videoName = input.files?.first?.name;
-    final videoPath = input.files?.first?.relativePath;
-    data.addAll({
-      'name': videoName,
-      'data': stripped,
-      'data_scheme': encoded,
-      'path': videoPath
-    });
+    data.addAll({'name': videoName, 'data': stripped, 'data_scheme': encoded});
     return data;
   }
 }
