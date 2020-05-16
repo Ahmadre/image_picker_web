@@ -1,3 +1,7 @@
+## 1.0.9 - [16.05.2020]
+
+* Add `getMultipleImageInfos()` example for getting all available picked types.
+
 ## 1.0.8 - [25.04.2020]
 
 * Remove `path` attribute from `MediaInfo`

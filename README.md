@@ -51,6 +51,43 @@ Setting ```outputType``` to ```ImageType.file```:
     }
 ```
 
+## How do I get all Informations out of my Image/Video (e.g. Image AND File in one run)?
+
+Besides the standard `getImage()` or `getVideo()` methods you can use the getters:
+  - `getImageInfo` or
+  - `getVideoInfo` to acheive this.
+
+**Full Example**
+```dart
+import 'dart:html' as html;
+ 
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:flutter/material.dart';
+
+ html.File _cloudFile;
+ var _fileBytes;
+ Image _imageWidget;
+ 
+ Future<void> getMultipleImageInfos() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
+      setState(() {
+        _cloudFile = mediaFile;
+        _fileBytes = mediaData.data;
+        _imageWidget = Image.memory(mediaData.data);
+      });
+    }
+  }
+```
+
+With `getMultipleImageInfos()` you can get all three available types in one call.
+
 ## Picking Videos
 
 To load a video as html.File do:
