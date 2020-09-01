@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker_web_redux/image_picker_web_redux.dart';
 
 void main() => runApp(MyApp());
 

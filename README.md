@@ -1,18 +1,20 @@
-# ImagePickerWeb
+# ImagePickerWebRedux
+
+**This is a fork from the original [image_picker_web](https://pub.dev/packages/image_picker_web) from [Ahmadre](https://github.com/Ahmadre) which is discontinued.**
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
-![ExampleGif](https://github.com/Ahmadre/image_picker_web/blob/master/assets/exampleupload.gif)
+![ExampleGif](https://github.com/TesteurManiak/image_picker_web_redux/blob/master/assets/exampleupload.gif)
 
 ### Disclaimer for Videos
 * Till now [Mar. 2020] it's not possible (due to security reasons) to play a local video file (see also video_player_web). But you can retreive the file and upload them somewhere and play it as a network source.
 
 ## Getting Started
 
-Add ```image_picker_web``` to your pubspec.yaml:
+Add ```image_picker_web_redux``` to your pubspec.yaml:
 
 ```yaml
-    image_picker_web: any
+    image_picker_web_redux: any
 ```
 
 ## Picking Images
@@ -63,7 +65,7 @@ import 'dart:html' as html;
  
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker_web_redux/image_picker_web_redux.dart';
 import 'package:flutter/material.dart';
 
  html.File _cloudFile;
