@@ -1,5 +1,3 @@
-import 'dart:html' as html;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -12,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Image pickedImage;
+  List<Image> pickedImages = [];
   String videoSRC;
 
   @override
@@ -36,7 +34,8 @@ class _MyAppState extends State<MyApp> {
 
     if (fromPicker != null) {
       setState(() {
-        pickedImage = fromPicker;
+        pickedImages.clear();
+        pickedImages.add(fromPicker);
       });
     }
   }
@@ -60,9 +59,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> pickMultiImages() async {
-    List<html.File> images =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
-    for (final img in images) print(img.name);
+    List<Image> images =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+    setState(() {
+      pickedImages.clear();
+      pickedImages.addAll(images);
+    });
   }
 
   @override
@@ -87,10 +89,14 @@ class _MyAppState extends State<MyApp> {
                     duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
                     child: SizedBox(
-                          width: 200,
-                          child: pickedImage,
-                        ) ??
-                        Container(),
+                      width: 300,
+                      height: 200,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              pickedImages == null ? 0 : pickedImages.length,
+                          itemBuilder: (context, index) => pickedImages[index]),
+                    ),
                   ),
                   const SizedBox(width: 15),
                   AnimatedSwitcher(

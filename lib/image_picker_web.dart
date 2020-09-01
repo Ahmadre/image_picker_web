@@ -3,6 +3,7 @@ library image_picker_web;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -71,6 +72,14 @@ class ImagePickerWeb {
     return results;
   }
 
+  Future<Uint8List> _fileAsBytes(html.File file) async {
+    final Completer<List<int>> bytesFile = Completer<List<int>>();
+    final html.FileReader reader = html.FileReader();
+    reader.onLoad.listen((event) => bytesFile.complete(reader.result));
+    reader.readAsArrayBuffer(file);
+    return Uint8List.fromList(await bytesFile.future);
+  }
+
   static Future<dynamic> getImage({@required ImageType outputType}) async {
     assert(outputType != null);
     if (!(outputType is ImageType)) {
@@ -113,11 +122,22 @@ class ImagePickerWeb {
       throw ArgumentError(
           'outputType has to be from Type: ImageType if you call getImage()');
     }
+    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    if (images == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return ImagePickerWeb()._pickMultiFiles('image');
-      // case ImageType.bytes:
-      // case ImageType.widget:
+        return images;
+      case ImageType.bytes:
+        List<Uint8List> files = [];
+        for (final img in images)
+          files.add(await ImagePickerWeb()._fileAsBytes(img));
+        return files.isEmpty ? null : files;
+      case ImageType.widget:
+        List<Uint8List> files = [];
+        for (final img in images)
+          files.add(await ImagePickerWeb()._fileAsBytes(img));
+        if (files.isEmpty) return null;
+        return files.map<Image>((e) => Image.memory(e)).toList();
       default:
         return null;
     }
