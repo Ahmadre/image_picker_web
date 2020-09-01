@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:html' as html;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
@@ -19,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  pickImage() async {
+  Future<void> pickImage() async {
     /// You can set the parameter asUint8List to true
     /// to get only the bytes from the image
     /* Uint8List bytesFromPicker =
@@ -30,7 +31,8 @@ class _MyAppState extends State<MyApp> {
     } */
 
     /// Default behavior would be getting the Image.memory
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+    Image fromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
     if (fromPicker != null) {
       setState(() {
@@ -39,8 +41,9 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  pickVideo() async {
-    final videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
+  Future<void> pickVideo() async {
+    final videoMetaData =
+        await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
     debugPrint('---Picked Video Bytes---');
     debugPrint(videoMetaData.toString());
@@ -50,9 +53,16 @@ class _MyAppState extends State<MyApp> {
 
     if (videoMetaData != null) {
       setState(() {
-        videoSRC = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+        videoSRC =
+            'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
       });
     }
+  }
+
+  Future<void> pickMultiImages() async {
+    List<html.File> images =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+    for (final img in images) print(img.name);
   }
 
   @override
@@ -74,7 +84,7 @@ class _MyAppState extends State<MyApp> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
                     child: SizedBox(
                           width: 200,
@@ -82,18 +92,16 @@ class _MyAppState extends State<MyApp> {
                         ) ??
                         Container(),
                   ),
-                  SizedBox(
-                    width: 15,
-                  ),
+                  const SizedBox(width: 15),
                   AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
                     child: videoSRC != null
                         ? Container(
-                            constraints:
-                                BoxConstraints(maxHeight: 200, maxWidth: 200),
+                            constraints: const BoxConstraints(
+                                maxHeight: 200, maxWidth: 200),
                             width: 200,
-                            child: WebVideoPlayer(
+                            child: const WebVideoPlayer(
                                 src: 'someNetworkSRC', controls: true))
                         : Container(),
                   )
@@ -101,13 +109,17 @@ class _MyAppState extends State<MyApp> {
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
                 RaisedButton(
-                  onPressed: () => pickImage(),
-                  child: Text('Select Image'),
+                  onPressed: pickImage,
+                  child: const Text('Select Image'),
                 ),
                 RaisedButton(
-                  onPressed: () => pickVideo(),
-                  child: Text('Select Video'),
+                  onPressed: pickVideo,
+                  child: const Text('Select Video'),
                 ),
+                RaisedButton(
+                  onPressed: pickMultiImages,
+                  child: const Text('Select Multi Images'),
+                )
               ]),
             ])),
       ),
