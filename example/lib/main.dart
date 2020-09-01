@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> pickMultiImages() async {
     List<html.File> images =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
     for (final img in images) print(img.name);
   }
 
