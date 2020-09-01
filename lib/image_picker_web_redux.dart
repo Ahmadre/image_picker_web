@@ -87,7 +87,7 @@ class ImagePickerWeb {
   /// * [ImageType.bytes] return a [Uint8List] of the selected image.
   ///
   /// * [ImageType.widget] return an [Image.memory] using the image's bytes.
-  /// 
+  ///
   /// ```dart
   /// html.File imgFile = await getImage(ImageType.file);
   /// Uint8List imgBytes = await getImage(ImageType.bytes);
@@ -114,6 +114,9 @@ class ImagePickerWeb {
     }
   }
 
+  /// Help to retrieve further image's informations about your picked source.
+  ///
+  /// Return an object [MediaInfo] containing image's informations.
   static Future<MediaInfo> get getImageInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
@@ -132,9 +135,9 @@ class ImagePickerWeb {
   ///
   /// * [ImageType.bytes] return a [Uint8List] list of the selected images.
   ///
-  /// * [ImageType.widget] return an [Image.memory] list using the images' 
+  /// * [ImageType.widget] return an [Image.memory] list using the images'
   /// bytes.
-  /// 
+  ///
   /// ```dart
   /// List<html.File> imgFiles = await getMultiImages(ImageType.file);
   /// List<Uint8List> imgBytes = await getMultiImages(ImageType.bytes);
@@ -167,27 +170,39 @@ class ImagePickerWeb {
     }
   }
 
+  /// Picker that close after selecting 1 video. Here are the different instance
+  /// of Future returned depending on [outputType] :
+  ///
+  /// * [VideoType.file] return a [html.File] object of the selected video.
+  ///
+  /// * [VideoType.bytes] return a [Uint8List] of the selected video.
+  ///
+  /// ```dart
+  /// html.File videoFile = await getVideo(VideoType.file);
+  /// Uint8List videoBytes = await getVideo(VideoType.bytes);
+  /// ```
   static Future<dynamic> getVideo({@required VideoType outputType}) async {
+    assert(outputType != null);
     if (!(outputType is VideoType)) {
       throw ArgumentError(
           'outputType has to be from Type: VideoType if you call getVideo()');
     }
     switch (outputType) {
       case VideoType.file:
-        await ImagePickerWeb()._pickFile('video');
-        break;
+        return ImagePickerWeb()._pickFile('video');
       case VideoType.bytes:
         final data =
             await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
         final imageData = base64.decode(data['data']);
         return imageData;
-        break;
       default:
         return null;
-        break;
     }
   }
 
+  /// Help to retrieve further video's informations about your picked source.
+  ///
+  /// Return an object [MediaInfo] containing video's informations.
   static Future<MediaInfo> get getVideoInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
