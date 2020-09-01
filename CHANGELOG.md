@@ -1,3 +1,10 @@
+## 1.1.0 - [01/09/2020]
+
+* Retake of the discontinued package [image_picker_web](https://pub.dev/packages/image_picker_web)
+* Refacto of method `getImage`
+* Added method `getMultiImages` to allow multi-image selection
+* Added a few comments for documentation generations
+
 ## 1.0.9 - [16.05.2020]
 
 * Add `getMultipleImageInfos()` example for getting all available picked types.

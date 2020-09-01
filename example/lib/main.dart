@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
                     duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
                     child: SizedBox(
-                      width: 300,
+                      width: 500,
                       height: 200,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,

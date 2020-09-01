@@ -45,7 +45,6 @@ class ImagePickerWeb {
     return input.files[0];
   }
 
-  ///
   /// source: https://stackoverflow.com/a/59420655/9942346
   Future<List<html.File>> _pickMultiFiles(String type) async {
     final completer = Completer<List<html.File>>();
@@ -80,6 +79,20 @@ class ImagePickerWeb {
     return Uint8List.fromList(await bytesFile.future);
   }
 
+  /// Picker that close after selecting 1 image. Here are the different instance
+  /// of Future returned depending on [outputType] :
+  ///
+  /// * [ImageType.file] return a [html.File] object of the selected image.
+  ///
+  /// * [ImageType.bytes] return a [Uint8List] of the selected image.
+  ///
+  /// * [ImageType.widget] return an [Image.memory] using the image's bytes.
+  /// 
+  /// ```dart
+  /// html.File imgFile = await getImage(ImageType.file);
+  /// Uint8List imgBytes = await getImage(ImageType.bytes);
+  /// Image imgWidget = await getImage(ImageType.widget);
+  /// ```
   static Future<dynamic> getImage({@required ImageType outputType}) async {
     assert(outputType != null);
     if (!(outputType is ImageType)) {
@@ -112,6 +125,21 @@ class ImagePickerWeb {
     return _webImageInfo;
   }
 
+  // Picker allow multi-image selection. Here are the different instance
+  /// of Future returned depending on [outputType] :
+  ///
+  /// * [ImageType.file] return a [html.File] list of the selected images.
+  ///
+  /// * [ImageType.bytes] return a [Uint8List] list of the selected images.
+  ///
+  /// * [ImageType.widget] return an [Image.memory] list using the images' 
+  /// bytes.
+  /// 
+  /// ```dart
+  /// List<html.File> imgFiles = await getMultiImages(ImageType.file);
+  /// List<Uint8List> imgBytes = await getMultiImages(ImageType.bytes);
+  /// List<Image> imgWidgets = await getMultiImages(ImageType.widget);
+  /// ```
   static Future<List> getMultiImages({@required ImageType outputType}) async {
     assert(outputType != null);
     if (!(outputType is ImageType)) {
