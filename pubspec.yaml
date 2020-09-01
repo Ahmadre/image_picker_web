@@ -24,6 +24,6 @@ flutter:
   plugin:
     platforms:
       web:
-        pluginClass: ImagePickerWebRedux
+        pluginClass: ImagePickerWeb
         fileName: image_picker_web_redux.dart
 

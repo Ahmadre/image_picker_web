@@ -86,20 +86,16 @@ class ImagePickerWeb {
       throw ArgumentError(
           'outputType has to be from Type: ImageType if you call getImage()');
     }
+    final file = await ImagePickerWeb()._pickFile('image');
+    if (file == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return ImagePickerWeb()._pickFile('image');
+        return file;
       case ImageType.bytes:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
-        final imageData = base64.decode(data['data']);
-        return imageData;
+        return ImagePickerWeb()._fileAsBytes(file);
       case ImageType.widget:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
-        final imageName = data['name'];
-        final imageData = base64.decode(data['data']);
-        return Image.memory(imageData, semanticLabel: imageName);
+        return Image.memory(await ImagePickerWeb()._fileAsBytes(file),
+            semanticLabel: file.name);
       default:
         return null;
     }
