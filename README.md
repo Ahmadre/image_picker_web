@@ -1,5 +1,10 @@
 # ImagePickerWebRedux
 
+[![Issues](https://img.shields.io/github/issues/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/issues)
+[![Forks](https://img.shields.io/github/forks/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/network/members)
+[![Stars](https://img.shields.io/github/stars/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/stargazers)
+[![Pub Version](https://img.shields.io/pub/v/image_picker_web_redux?color=blue&logo=dart)](https://pub.dev/packages/image_picker_web_redux)
+
 **This is a fork from the original [image_picker_web](https://pub.dev/packages/image_picker_web) from [Ahmadre](https://github.com/Ahmadre) which is discontinued.**
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
@@ -18,6 +23,8 @@ Add ```image_picker_web_redux``` to your pubspec.yaml:
 ```
 
 ## Picking Images
+
+### Pick an image
 
 Load Image as Image Widget:
 
@@ -50,6 +57,40 @@ Setting ```outputType``` to ```ImageType.file```:
 
     if (imageFile != null) {
       debugPrint(imageFile.name.toString());
+    }
+```
+
+### Pick multiple images
+
+Load Images as Image Widgets:
+
+```dart
+    List<Image> fromPicker = await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+
+    if (fromPicker != null) {
+      setState(() => pickedImages = fromPicker);
+    }
+```
+
+Setting ```outputType``` to ```ImageType.bytes```:
+
+```dart
+    List<Uint8List> bytesFromPicker =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      bytesFromPicker.forEach((bytes) => debugPrint(bytes.toString()));
+    }
+```
+
+Setting ```outputType``` to ```ImageType.file```:
+
+```dart
+    List<html.File> imageFiles =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
+
+    if (imageFiles != null) {
+      imageFiles.forEach((image) => debugPrint(image.name.toString()));
     }
 ```
 

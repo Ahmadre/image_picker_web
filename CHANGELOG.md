@@ -1,3 +1,7 @@
+## 1.1.0+2 - [01/09/2020]
+
+* Update README.md
+
 ## 1.1.0+1 - [01/09/2020]
 
 * Format code to dartfm standard
