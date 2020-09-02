@@ -1,18 +1,26 @@
-import 'dart:typed_data';
-
 /// Class used to return informations retrieved from an image or video.
 class MediaInfo {
   /// Name of the file.
-  String fileName;
+  final String fileName;
 
   /// File's data to Base64.
-  String base64;
+  final String base64;
 
   /// File's data to Base64WithScheme.
-  String base64WithScheme;
+  final String base64WithScheme;
 
-  /// File's bytes.
-  Uint8List data;
+  MediaInfo({this.fileName, this.base64, this.base64WithScheme});
+
+  /// Factory constructor to generate [MediaInfo] from :
+  ///
+  /// ```dart
+  /// await _methodChannel.invokeMapMethod<String, dynamic>('pickImage')
+  /// ```
+  factory MediaInfo.fromJson(Map<String, dynamic> json) => MediaInfo(
+        fileName: json['name'],
+        base64: json['data'],
+        base64WithScheme: json['data_scheme'],
+      );
 }
 
 /// Image's type.

@@ -120,12 +120,7 @@ class ImagePickerWeb {
   static Future<MediaInfo> get getImageInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
-    MediaInfo _webImageInfo = MediaInfo();
-    _webImageInfo.fileName = data['name'];
-    _webImageInfo.base64 = data['data'];
-    _webImageInfo.base64WithScheme = data['data_scheme'];
-    _webImageInfo.data = base64.decode(data['data']);
-    return _webImageInfo;
+    return MediaInfo.fromJson(data);
   }
 
   // Picker allow multi-image selection. Here are the different instance
@@ -206,11 +201,6 @@ class ImagePickerWeb {
   static Future<MediaInfo> get getVideoInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    MediaInfo _webVideoInfo = MediaInfo();
-    _webVideoInfo.fileName = data['name'];
-    _webVideoInfo.base64 = data['data'];
-    _webVideoInfo.base64WithScheme = data['data_scheme'];
-    _webVideoInfo.data = base64.decode(data['data']);
-    return _webVideoInfo;
+    return MediaInfo.fromJson(data);
   }
 }

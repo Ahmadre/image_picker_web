@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
 import 'package:image_picker_web_redux/image_picker_web_redux.dart';
@@ -19,16 +21,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> pickImage() async {
-    /// You can set the parameter asUint8List to true
-    /// to get only the bytes from the image
-    /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    } */
-
-    /// Default behavior would be getting the Image.memory
     Image fromPicker =
         await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
@@ -65,6 +57,11 @@ class _MyAppState extends State<MyApp> {
       pickedImages.clear();
       pickedImages.addAll(images);
     });
+  }
+
+  Future<void> getImgInfo() async {
+    html.File infos = await ImagePickerWeb.getImage(outputType: ImageType.file);
+    print('Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
   }
 
   @override
@@ -125,6 +122,10 @@ class _MyAppState extends State<MyApp> {
                 RaisedButton(
                   onPressed: pickMultiImages,
                   child: const Text('Select Multi Images'),
+                ),
+                RaisedButton(
+                  onPressed: getImgInfo,
+                  child: const Text('Get Image Info'),
                 )
               ]),
             ])),
