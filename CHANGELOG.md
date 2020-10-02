@@ -1,3 +1,9 @@
+## 1.1.1 - [02/10/2020]
+
+* Upgraded minimum sdk to `>=2.7.0`
+* Added new `ImageType.mediaInfo`
+* Made some code refacto 
+
 ## 1.1.0+2 - [01/09/2020]
 
 * Update README.md
