@@ -12,27 +12,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Image> pickedImages = [];
-  String videoSRC;
+  final _pickedImages = <Image>[];
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  String _videoSRC;
+  String _imageInfo = '';
 
-  Future<void> pickImage() async {
+  Future<void> _pickImage() async {
     Image fromPicker =
         await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
     if (fromPicker != null) {
       setState(() {
-        pickedImages.clear();
-        pickedImages.add(fromPicker);
+        _pickedImages.clear();
+        _pickedImages.add(fromPicker);
       });
     }
   }
 
-  Future<void> pickVideo() async {
+  Future<void> _pickVideo() async {
     final videoMetaData =
         await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
@@ -44,24 +41,31 @@ class _MyAppState extends State<MyApp> {
 
     if (videoMetaData != null) {
       setState(() {
-        videoSRC =
+        _videoSRC =
             'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
       });
     }
   }
 
-  Future<void> pickMultiImages() async {
+  Future<void> _pickMultiImages() async {
     List<Image> images =
         await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
     setState(() {
-      pickedImages.clear();
-      pickedImages.addAll(images);
+      _pickedImages.clear();
+      _pickedImages.addAll(images);
     });
   }
 
-  Future<void> getImgInfo() async {
+  Future<void> _getImgFile() async {
     html.File infos = await ImagePickerWeb.getImage(outputType: ImageType.file);
-    print('Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
+    setState(() => _imageInfo =
+        'Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
+  }
+
+  Future<void> _getImgInfo() async {
+    final infos = await ImagePickerWeb.getImageInfo;
+    setState(
+        () => _imageInfo = 'Name: ${infos.fileName}\nBase64: ${infos.base64}');
   }
 
   @override
@@ -91,15 +95,16 @@ class _MyAppState extends State<MyApp> {
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount:
-                              pickedImages == null ? 0 : pickedImages.length,
-                          itemBuilder: (context, index) => pickedImages[index]),
+                              _pickedImages == null ? 0 : _pickedImages.length,
+                          itemBuilder: (context, index) =>
+                              _pickedImages[index]),
                     ),
                   ),
                   const SizedBox(width: 15),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
-                    child: videoSRC != null
+                    child: _videoSRC != null
                         ? Container(
                             constraints: const BoxConstraints(
                                 maxHeight: 200, maxWidth: 200),
@@ -107,26 +112,32 @@ class _MyAppState extends State<MyApp> {
                             child: const WebVideoPlayer(
                                 src: 'someNetworkSRC', controls: true))
                         : Container(),
-                  )
+                  ),
+                  const SizedBox(width: 15),
+                  Text(_imageInfo),
                 ],
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
                 RaisedButton(
-                  onPressed: pickImage,
+                  onPressed: _pickImage,
                   child: const Text('Select Image'),
                 ),
                 RaisedButton(
-                  onPressed: pickVideo,
+                  onPressed: _pickVideo,
                   child: const Text('Select Video'),
                 ),
                 RaisedButton(
-                  onPressed: pickMultiImages,
+                  onPressed: _pickMultiImages,
                   child: const Text('Select Multi Images'),
                 ),
                 RaisedButton(
-                  onPressed: getImgInfo,
+                  onPressed: _getImgFile,
+                  child: const Text('Get Image File'),
+                ),
+                RaisedButton(
+                  onPressed: _getImgInfo,
                   child: const Text('Get Image Info'),
-                )
+                ),
               ]),
             ])),
       ),

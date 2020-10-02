@@ -36,7 +36,7 @@ class ImagePickerWeb {
   static const MethodChannel _methodChannel =
       const MethodChannel('image_picker_web');
 
-  Future<html.File> _pickFile(String type) async {
+  static Future<html.File> _pickFile(String type) async {
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input.accept = '$type/*';
     input.click();
@@ -99,7 +99,7 @@ class ImagePickerWeb {
       throw ArgumentError(
           'outputType has to be from Type: ImageType if you call getImage()');
     }
-    final file = await ImagePickerWeb()._pickFile('image');
+    final file = await ImagePickerWeb._pickFile('image');
     if (file == null) return null;
     switch (outputType) {
       case ImageType.file:
@@ -184,7 +184,7 @@ class ImagePickerWeb {
     }
     switch (outputType) {
       case VideoType.file:
-        return ImagePickerWeb()._pickFile('video');
+        return ImagePickerWeb._pickFile('video');
       case VideoType.bytes:
         final data =
             await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
