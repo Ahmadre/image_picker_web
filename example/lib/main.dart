@@ -63,7 +63,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _getImgInfo() async {
-    final infos = await ImagePickerWeb.getImageInfo;
+    final infos =
+        await ImagePickerWeb.getImage(outputType: ImageType.mediaInfo);
     setState(
         () => _imageInfo = 'Name: ${infos.fileName}\nBase64: ${infos.base64}');
   }
@@ -114,7 +115,11 @@ class _MyAppState extends State<MyApp> {
                         : Container(),
                   ),
                   const SizedBox(width: 15),
-                  Text(_imageInfo),
+                  Container(
+                    height: 200,
+                    width: 200,
+                    child: Text(_imageInfo, overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[

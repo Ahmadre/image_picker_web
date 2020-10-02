@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'src/Models/Types.dart';
+import 'src/extensions/file_extensions.dart' show FileModifier;
 import 'src/web_image_picker.dart';
 
 export 'src/Models/Types.dart';
@@ -71,14 +72,6 @@ class ImagePickerWeb {
     return results;
   }
 
-  Future<Uint8List> _fileAsBytes(html.File file) async {
-    final Completer<List<int>> bytesFile = Completer<List<int>>();
-    final html.FileReader reader = html.FileReader();
-    reader.onLoad.listen((event) => bytesFile.complete(reader.result));
-    reader.readAsArrayBuffer(file);
-    return Uint8List.fromList(await bytesFile.future);
-  }
-
   /// Picker that close after selecting 1 image. Here are the different instance
   /// of Future returned depending on [outputType] :
   ///
@@ -105,12 +98,11 @@ class ImagePickerWeb {
       case ImageType.file:
         return file;
       case ImageType.bytes:
-        return ImagePickerWeb()._fileAsBytes(file);
+        return file.asBytes();
       case ImageType.widget:
-        return Image.memory(await ImagePickerWeb()._fileAsBytes(file),
-            semanticLabel: file.name);
-      default:
-        return null;
+        return Image.memory(await file.asBytes(), semanticLabel: file.name);
+      case ImageType.mediaInfo:
+        return MediaInfo.fromFile(file, await file.asBytes());
     }
   }
 
@@ -151,13 +143,11 @@ class ImagePickerWeb {
         return images;
       case ImageType.bytes:
         List<Uint8List> files = [];
-        for (final img in images)
-          files.add(await ImagePickerWeb()._fileAsBytes(img));
+        for (final img in images) files.add(await img.asBytes());
         return files.isEmpty ? null : files;
       case ImageType.widget:
         List<Uint8List> files = [];
-        for (final img in images)
-          files.add(await ImagePickerWeb()._fileAsBytes(img));
+        for (final img in images) files.add(await img.asBytes());
         if (files.isEmpty) return null;
         return files.map<Image>((e) => Image.memory(e)).toList();
       default:
