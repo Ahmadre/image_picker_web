@@ -7,6 +7,7 @@ class WebImagePicker {
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input..accept = 'image/*';
     input.click();
+    html.document.body.append(input);
     await input.onChange.first;
     if (input.files.isEmpty) return null;
     final reader = html.FileReader();
@@ -17,6 +18,7 @@ class WebImagePicker {
         encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
     final imageName = input.files?.first?.name;
     data.addAll({'name': imageName, 'data': stripped, 'data_scheme': encoded});
+    input.remove();
     return data;
   }
 
@@ -25,6 +27,7 @@ class WebImagePicker {
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input..accept = 'video/*';
     input.click();
+    html.document.body.append(input);
     await input.onChange.first;
     if (input.files.isEmpty) return null;
     final reader = html.FileReader();
@@ -35,6 +38,7 @@ class WebImagePicker {
         encoded.replaceFirst(RegExp(r'data:video/[^;]+;base64,'), '');
     final videoName = input.files?.first?.name;
     data.addAll({'name': videoName, 'data': stripped, 'data_scheme': encoded});
+    input.remove();
     return data;
   }
 }
