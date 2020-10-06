@@ -16,5 +16,5 @@ jobs:
         channel: beta
     - run: flutter config --enable-web
     - run: flutter pub get
-    - run: cd ./example/
-    - run: flutter build web
+    - run: ls -a
+    - run: pwd
