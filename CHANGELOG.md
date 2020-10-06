@@ -1,3 +1,9 @@
+## 1.1.3 - [06/10/2020]
+
+* Added `toJson` method to `MediaInfo`
+* Fixed `getImageInfo` and `getVideoInfo`
+* Updated `example/main.dart`
+
 ## 1.1.2+1 - [06/10/2020]
 
 * Fixed `pickImage` and `pickVideo`
