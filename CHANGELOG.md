@@ -1,3 +1,7 @@
+## 1.1.2 - [06/10/2020]
+
+* Fixed compatibility with iOS web browser
+
 ## 1.1.1 - [02/10/2020]
 
 * Upgraded minimum sdk to `>=2.7.0`
