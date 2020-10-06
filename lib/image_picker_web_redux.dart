@@ -41,6 +41,7 @@ class ImagePickerWeb {
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input.accept = '$type/*';
     input.click();
+    html.document.body.append(input);
     await input.onChange.first;
     if (input.files.isEmpty) return null;
     return input.files[0];
