@@ -36,13 +36,9 @@ class _MyAppState extends State<MyApp> {
     debugPrint('---Picked Video Bytes---');
     debugPrint(videoMetaData.toString());
 
-    /// >>> Upload your video in Bytes now to any backend <<<
-    /// >>> Disclaimer: local files are not working till now! [February 2020] <<<
-
     if (videoMetaData != null) {
       setState(() {
-        _videoSRC =
-            'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+        _videoSRC = 'https://shorturl.at/ipsxC';
       });
     }
   }
