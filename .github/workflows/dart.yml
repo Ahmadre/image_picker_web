@@ -16,7 +16,7 @@ jobs:
         channel: beta
     - run: flutter config --enable-web
     - run: flutter pub get
-    - run: flutter format --set-exit-if-changed
+    - run: flutter format --set-exit-if-changed .
     - run: flutter analyze .
     - name: Build example
       run: flutter build web
