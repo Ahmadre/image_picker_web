@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html' as html;
 
 import 'dart:typed_data';
 
@@ -15,29 +14,28 @@ class MediaInfo {
   final String base64WithScheme;
 
   /// File's bytes data.
-  final Uint8List bytes;
+  final Uint8List data;
 
-  MediaInfo({this.fileName, this.base64, this.base64WithScheme, this.bytes});
+  MediaInfo({this.fileName, this.base64, this.base64WithScheme, this.data});
 
   /// Factory constructor to generate [MediaInfo] from [Map<String, dynamic>].
   factory MediaInfo.fromJson(Map<String, dynamic> json) => MediaInfo(
         fileName: json['name'],
         base64: json['data'],
         base64WithScheme: json['data_scheme'],
-        bytes: base64Decode(json['data']),
+        data: base64Decode(json['data']),
       );
 
-  /// Factory constructor to generate [MediaInfo] from [html.File] file and
-  /// [Uint8List] bytes.
-  factory MediaInfo.fromFile(html.File file, Uint8List bytes) => MediaInfo(
-        fileName: file.name,
-        base64: String.fromCharCodes(bytes),
-        bytes: bytes,
-      );
+  /// Convert [MediaInfo] to [Map<String, dynamic>] format
+  Map<String, dynamic> toJson() => {
+        'name': fileName,
+        'data': base64,
+        'data_scheme': base64WithScheme,
+      };
 }
 
 /// Image's type.
-enum ImageType { file, bytes, widget, mediaInfo }
+enum ImageType { file, bytes, widget }
 
 /// Video's type.
 enum VideoType { file, bytes }

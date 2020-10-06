@@ -23,11 +23,9 @@ class ImagePickerWeb {
     channel.setMethodCallHandler((call) async {
       switch (call.method) {
         case 'pickImage':
-          await instance.pickImage();
-          break;
+          return instance.pickImage();
         case 'pickVideo':
-          await instance.pickVideo();
-          break;
+          return instance.pickVideo();
         default:
           throw MissingPluginException();
       }
@@ -102,8 +100,6 @@ class ImagePickerWeb {
         return file.asBytes();
       case ImageType.widget:
         return Image.memory(await file.asBytes(), semanticLabel: file.name);
-      case ImageType.mediaInfo:
-        return MediaInfo.fromFile(file, await file.asBytes());
     }
   }
 
@@ -169,10 +165,6 @@ class ImagePickerWeb {
   /// ```
   static Future<dynamic> getVideo({@required VideoType outputType}) async {
     assert(outputType != null);
-    if (!(outputType is VideoType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: VideoType if you call getVideo()');
-    }
     switch (outputType) {
       case VideoType.file:
         return ImagePickerWeb._pickFile('video');

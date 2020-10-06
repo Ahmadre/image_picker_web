@@ -3,13 +3,11 @@ description: Demonstrates how to use the image_picker_web plugin.
 publish_to: "none"
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_web_video_player: ^1.0.0+1
-
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
