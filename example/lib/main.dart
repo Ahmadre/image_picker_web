@@ -13,6 +13,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _pickedImages = <Image>[];
+  final _videoUrl =
+      'https://sample-videos.com/video312/mp4/240/big_buck_bunny_240p_1mb.mp4';
 
   String _videoSRC;
   String _imageInfo = '';
@@ -33,14 +35,7 @@ class _MyAppState extends State<MyApp> {
     final videoMetaData =
         await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
-    debugPrint('---Picked Video Bytes---');
-    debugPrint(videoMetaData.toString());
-
-    if (videoMetaData != null) {
-      setState(() {
-        _videoSRC = 'https://shorturl.at/ipsxC';
-      });
-    }
+    if (videoMetaData != null) setState(() => _videoSRC = _videoUrl);
   }
 
   Future<void> _pickMultiImages() async {
@@ -59,10 +54,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _getImgInfo() async {
-    final infos =
-        await ImagePickerWeb.getImage(outputType: ImageType.mediaInfo);
-    setState(
-        () => _imageInfo = 'Name: ${infos.fileName}\nBase64: ${infos.base64}');
+    final infos = await ImagePickerWeb.getImageInfo;
+    setState(() {
+      _pickedImages.clear();
+      _pickedImages.add(Image.memory(
+        infos.data,
+        semanticLabel: infos.fileName,
+      ));
+      _imageInfo = 'Name: ${infos.fileName}\nBase64: ${infos.base64}';
+    });
   }
 
   @override
