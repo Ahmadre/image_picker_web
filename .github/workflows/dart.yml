@@ -9,16 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      example-dir:  ./example
     steps:
     - uses: actions/checkout@v1
     - uses: subosito/flutter-action@v1
       with:
         channel: beta
     - run: flutter config --enable-web
-      working-directory: ${{env.example-dir}}
     - run: flutter pub get
-    - run: pwd
-    - run: ls -a
-    - run: flutter build web
+    - run: flutter format --set-exit-if-changed
+    - run: flutter analyze .
+    - name: Build example
+      run: flutter build web
+      working-directory: example
+
