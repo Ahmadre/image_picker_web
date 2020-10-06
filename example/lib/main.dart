@@ -1,7 +1,6 @@
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_web_video_player/flutter_web_video_player.dart';
 import 'package:image_picker_web_redux/image_picker_web_redux.dart';
 
 void main() => runApp(MyApp());
@@ -13,10 +12,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _pickedImages = <Image>[];
-  final _videoUrl =
-      'https://sample-videos.com/video312/mp4/240/big_buck_bunny_240p_1mb.mp4';
+  final _pickedVideos = <dynamic>[];
 
-  String _videoSRC;
   String _imageInfo = '';
 
   Future<void> _pickImage() async {
@@ -34,8 +31,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> _pickVideo() async {
     final videoMetaData =
         await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
-
-    if (videoMetaData != null) setState(() => _videoSRC = _videoUrl);
+    if (videoMetaData != null)
+      setState(() {
+        _pickedVideos.clear();
+        _pickedVideos.add(videoMetaData);
+      });
   }
 
   Future<void> _pickMultiImages() async {
@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
         infos.data,
         semanticLabel: infos.fileName,
       ));
-      _imageInfo = 'Name: ${infos.fileName}\nBase64: ${infos.base64}';
+      _imageInfo = '${infos.toJson()}';
     });
   }
 
@@ -78,10 +78,8 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+              Wrap(
+                // spacing: 15.0,
                 children: <Widget>[
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
@@ -97,25 +95,17 @@ class _MyAppState extends State<MyApp> {
                               _pickedImages[index]),
                     ),
                   ),
-                  const SizedBox(width: 15),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeIn,
-                    child: _videoSRC != null
-                        ? Container(
-                            constraints: const BoxConstraints(
-                                maxHeight: 200, maxWidth: 200),
-                            width: 200,
-                            child: const WebVideoPlayer(
-                                src: 'someNetworkSRC', controls: true))
-                        : Container(),
-                  ),
-                  const SizedBox(width: 15),
                   Container(
                     height: 200,
                     width: 200,
                     child: Text(_imageInfo, overflow: TextOverflow.ellipsis),
                   ),
+                  ..._pickedVideos
+                      .map<Widget>((e) => Text(
+                            e.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                      .toList(),
                 ],
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[

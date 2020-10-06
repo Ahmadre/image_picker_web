@@ -25,6 +25,13 @@ class MediaInfo {
         base64WithScheme: json['data_scheme'],
         data: base64Decode(json['data']),
       );
+
+  /// Convert [MediaInfo] to [Map<String, dynamic>] format
+  Map<String, dynamic> toJson() => {
+        'name': fileName,
+        'data': base64,
+        'data_scheme': base64WithScheme,
+      };
 }
 
 /// Image's type.
