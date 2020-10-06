@@ -1,3 +1,7 @@
+## 1.1.2+1 - [06/10/2020]
+
+* Fixed `pickImage` and `pickVideo`
+
 ## 1.1.2 - [06/10/2020]
 
 * Fixed compatibility with iOS web browser
