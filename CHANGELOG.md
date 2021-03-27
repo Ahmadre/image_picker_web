@@ -1,3 +1,8 @@
+## 2.0.0 - [27/03/2021]
+
+* **Breaking Changes**: migrated code to nullsafety
+* Removed deprecated properties
+
 ## 1.1.3 - [06/10/2020]
 
 * Added `toJson` method to `MediaInfo`

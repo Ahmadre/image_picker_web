@@ -5,16 +5,16 @@ import 'dart:typed_data';
 /// Class used to return informations retrieved from an image or video.
 class MediaInfo {
   /// Name of the file.
-  final String fileName;
+  final String? fileName;
 
   /// File's data to Base64.
-  final String base64;
+  final String? base64;
 
   /// File's data to Base64WithScheme.
-  final String base64WithScheme;
+  final String? base64WithScheme;
 
   /// File's bytes data.
-  final Uint8List data;
+  final Uint8List? data;
 
   MediaInfo({this.fileName, this.base64, this.base64WithScheme, this.data});
 

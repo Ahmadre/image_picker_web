@@ -109,23 +109,23 @@ class _MyAppState extends State<MyApp> {
                 ],
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _pickImage,
                   child: const Text('Select Image'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _pickVideo,
                   child: const Text('Select Video'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _pickMultiImages,
                   child: const Text('Select Multi Images'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _getImgFile,
                   child: const Text('Get Image File'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _getImgInfo,
                   child: const Text('Get Image Info'),
                 ),
