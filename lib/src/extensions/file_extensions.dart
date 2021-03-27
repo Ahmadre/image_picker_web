@@ -7,7 +7,8 @@ extension FileModifier on html.File {
   Future<Uint8List> asBytes() async {
     final Completer<List<int>> bytesFile = Completer<List<int>>();
     final html.FileReader reader = html.FileReader();
-    reader.onLoad.listen((event) => bytesFile.complete(reader.result as FutureOr<List<int>>?));
+    reader.onLoad.listen(
+        (event) => bytesFile.complete(reader.result as FutureOr<List<int>>?));
     reader.readAsArrayBuffer(this);
     return Uint8List.fromList(await bytesFile.future);
   }
