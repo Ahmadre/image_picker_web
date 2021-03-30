@@ -167,9 +167,8 @@ class ImagePickerWeb {
         return ImagePickerWeb._pickFile('video');
       case VideoType.bytes:
         final data =
-            await (_methodChannel.invokeMapMethod<String, dynamic>('pickVideo')
-                as FutureOr<Map<String, dynamic>>);
-        final imageData = base64.decode(data['data']);
+            await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+        final imageData = base64.decode(data!['data']);
         return imageData;
       default:
         return null;
@@ -181,8 +180,7 @@ class ImagePickerWeb {
   /// Return an object [MediaInfo] containing video's informations.
   static Future<MediaInfo> get getVideoInfo async {
     final data =
-        await (_methodChannel.invokeMapMethod<String, dynamic>('pickVideo')
-            as FutureOr<Map<String, dynamic>>);
-    return MediaInfo.fromJson(data);
+        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+    return MediaInfo.fromJson(data!);
   }
 }
