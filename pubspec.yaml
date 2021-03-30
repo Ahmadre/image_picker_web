@@ -1,7 +1,7 @@
 name: image_picker_web_redux
 description: Flutter Web Plugin to pick Images (as Widget, File or Uint8List)
   and Videos (as File or Uint8List)
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/TesteurManiak
 repository: https://github.com/TesteurManiak/image_picker_web_redux
 

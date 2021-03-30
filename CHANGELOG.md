@@ -1,3 +1,7 @@
+## 2.0.1 - [30/03/2021]
+
+* Fixed `FutureOr<Map<String, dynamic>>` cast
+
 ## 2.0.0 - [27/03/2021]
 
 * **Breaking Changes**: migrated code to nullsafety
