@@ -107,8 +107,7 @@ class ImagePickerWeb {
   /// Return an object [MediaInfo] containing image's informations.
   static Future<MediaInfo> get getImageInfo async {
     final data =
-        await (_methodChannel.invokeMapMethod<String, dynamic>('pickImage')
-            as Future<Map<String, dynamic>?>);
+        await (_methodChannel.invokeMapMethod<String, dynamic>('pickImage'));
     return MediaInfo.fromJson(data!);
   }
 
