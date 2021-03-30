@@ -107,9 +107,8 @@ class ImagePickerWeb {
   /// Return an object [MediaInfo] containing image's informations.
   static Future<MediaInfo> get getImageInfo async {
     final data =
-        await (_methodChannel.invokeMapMethod<String, dynamic>('pickImage')
-            as FutureOr<Map<String, dynamic>>);
-    return MediaInfo.fromJson(data);
+        await (_methodChannel.invokeMapMethod<String, dynamic>('pickImage'));
+    return MediaInfo.fromJson(data!);
   }
 
   // Picker allow multi-image selection. Here are the different instance
