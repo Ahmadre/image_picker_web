@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:html' as html;
 
-import 'package:flutter_web_video_player/flutter_web_video_player.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker_web_redux/image_picker_web_redux.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,48 +11,58 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Image pickedImage;
-  String videoSRC;
+  final _pickedImages = <Image>[];
+  final _pickedVideos = <dynamic>[];
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  String _imageInfo = '';
 
-  pickImage() async {
-    /// You can set the parameter asUint8List to true
-    /// to get only the bytes from the image
-    /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    } */
-
-    /// Default behavior would be getting the Image.memory
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+  Future<void> _pickImage() async {
+    Image fromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.widget);
 
     if (fromPicker != null) {
       setState(() {
-        pickedImage = fromPicker;
+        _pickedImages.clear();
+        _pickedImages.add(fromPicker);
       });
     }
   }
 
-  pickVideo() async {
-    final videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
-
-    debugPrint('---Picked Video Bytes---');
-    debugPrint(videoMetaData.toString());
-
-    /// >>> Upload your video in Bytes now to any backend <<<
-    /// >>> Disclaimer: local files are not working till now! [February 2020] <<<
-
-    if (videoMetaData != null) {
+  Future<void> _pickVideo() async {
+    final videoMetaData =
+        await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
+    if (videoMetaData != null)
       setState(() {
-        videoSRC = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+        _pickedVideos.clear();
+        _pickedVideos.add(videoMetaData);
       });
-    }
+  }
+
+  Future<void> _pickMultiImages() async {
+    List<Image> images =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+    setState(() {
+      _pickedImages.clear();
+      _pickedImages.addAll(images);
+    });
+  }
+
+  Future<void> _getImgFile() async {
+    html.File infos = await ImagePickerWeb.getImage(outputType: ImageType.file);
+    setState(() => _imageInfo =
+        'Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
+  }
+
+  Future<void> _getImgInfo() async {
+    final infos = await ImagePickerWeb.getImageInfo;
+    setState(() {
+      _pickedImages.clear();
+      _pickedImages.add(Image.memory(
+        infos.data,
+        semanticLabel: infos.fileName,
+      ));
+      _imageInfo = '${infos.toJson()}';
+    });
   }
 
   @override
@@ -68,45 +78,56 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+              Wrap(
+                // spacing: 15.0,
                 children: <Widget>[
                   AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     switchInCurve: Curves.easeIn,
                     child: SizedBox(
-                          width: 200,
-                          child: pickedImage,
-                        ) ??
-                        Container(),
+                      width: 500,
+                      height: 200,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              _pickedImages == null ? 0 : _pickedImages.length,
+                          itemBuilder: (context, index) =>
+                              _pickedImages[index]),
+                    ),
                   ),
-                  SizedBox(
-                    width: 15,
+                  Container(
+                    height: 200,
+                    width: 200,
+                    child: Text(_imageInfo, overflow: TextOverflow.ellipsis),
                   ),
-                  AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeIn,
-                    child: videoSRC != null
-                        ? Container(
-                            constraints:
-                                BoxConstraints(maxHeight: 200, maxWidth: 200),
-                            width: 200,
-                            child: WebVideoPlayer(
-                                src: 'someNetworkSRC', controls: true))
-                        : Container(),
-                  )
+                  ..._pickedVideos
+                      .map<Widget>((e) => Text(
+                            e.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                      .toList(),
                 ],
               ),
               ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-                RaisedButton(
-                  onPressed: () => pickImage(),
-                  child: Text('Select Image'),
+                ElevatedButton(
+                  onPressed: _pickImage,
+                  child: const Text('Select Image'),
                 ),
-                RaisedButton(
-                  onPressed: () => pickVideo(),
-                  child: Text('Select Video'),
+                ElevatedButton(
+                  onPressed: _pickVideo,
+                  child: const Text('Select Video'),
+                ),
+                ElevatedButton(
+                  onPressed: _pickMultiImages,
+                  child: const Text('Select Multi Images'),
+                ),
+                ElevatedButton(
+                  onPressed: _getImgFile,
+                  child: const Text('Get Image File'),
+                ),
+                ElevatedButton(
+                  onPressed: _getImgInfo,
+                  child: const Text('Get Image Info'),
                 ),
               ]),
             ])),

@@ -1,21 +1,30 @@
-# ImagePickerWeb
+# ImagePickerWebRedux
+
+[![Issues](https://img.shields.io/github/issues/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/issues)
+[![Forks](https://img.shields.io/github/forks/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/network/members)
+[![Stars](https://img.shields.io/github/stars/TesteurManiak/image_picker_web_redux)](https://github.com/TesteurManiak/image_picker_web_redux/stargazers)
+[![Pub Version](https://img.shields.io/pub/v/image_picker_web_redux?color=blue&logo=dart)](https://pub.dev/packages/image_picker_web_redux)
+
+**This is a fork from the original [image_picker_web](https://pub.dev/packages/image_picker_web) from [Ahmadre](https://github.com/Ahmadre) which is discontinued.**
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
-![ExampleGif](https://github.com/Ahmadre/image_picker_web/blob/master/assets/exampleupload.gif)
+![ExampleGif](https://github.com/TesteurManiak/image_picker_web_redux/blob/master/assets/exampleupload.gif)
 
 ### Disclaimer for Videos
 * Till now [Mar. 2020] it's not possible (due to security reasons) to play a local video file (see also video_player_web). But you can retreive the file and upload them somewhere and play it as a network source.
 
 ## Getting Started
 
-Add ```image_picker_web``` to your pubspec.yaml:
+Add ```image_picker_web_redux``` to your pubspec.yaml:
 
 ```yaml
-    image_picker_web: any
+    image_picker_web_redux: any
 ```
 
 ## Picking Images
+
+### Pick an image
 
 Load Image as Image Widget:
 
@@ -51,6 +60,40 @@ Setting ```outputType``` to ```ImageType.file```:
     }
 ```
 
+### Pick multiple images
+
+Load Images as Image Widgets:
+
+```dart
+    List<Image> fromPicker = await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+
+    if (fromPicker != null) {
+      setState(() => pickedImages = fromPicker);
+    }
+```
+
+Setting ```outputType``` to ```ImageType.bytes```:
+
+```dart
+    List<Uint8List> bytesFromPicker =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      bytesFromPicker.forEach((bytes) => debugPrint(bytes.toString()));
+    }
+```
+
+Setting ```outputType``` to ```ImageType.file```:
+
+```dart
+    List<html.File> imageFiles =
+        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
+
+    if (imageFiles != null) {
+      imageFiles.forEach((image) => debugPrint(image.name.toString()));
+    }
+```
+
 ## How do I get all Informations out of my Image/Video (e.g. Image AND File in one run)?
 
 Besides the standard `getImage()` or `getVideo()` methods you can use the getters:
@@ -63,7 +106,7 @@ import 'dart:html' as html;
  
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker_web_redux/image_picker_web_redux.dart';
 import 'package:flutter/material.dart';
 
  html.File _cloudFile;

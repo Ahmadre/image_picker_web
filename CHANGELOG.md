@@ -1,38 +1,44 @@
-## 1.0.9 - [16.05.2020]
+## 2.0.1 - [30/03/2021]
 
-* Add `getMultipleImageInfos()` example for getting all available picked types.
+* Fixed `FutureOr<Map<String, dynamic>>` cast
 
-## 1.0.8 - [25.04.2020]
+## 2.0.0 - [27/03/2021]
 
-* Remove `path` attribute from `MediaInfo`
-    - Answers: [#5](https://github.com/Ahmadre/image_picker_web/issues/5)
+* **Breaking Changes**: migrated code to nullsafety
+* Removed deprecated properties
 
-## 1.0.6 - [31.03.2020]
+## 1.1.3 - [06/10/2020]
 
-* Update pub readme
+* Added `toJson` method to `MediaInfo`
+* Fixed `getImageInfo` and `getVideoInfo`
+* Updated `example/main.dart`
 
-## 1.0.3 - [20.03.2020]
+## 1.1.2+1 - [06/10/2020]
 
-* Refactor Models
-    - Add Image and Video Enums
-* Add `pickFile` for images and videos (automatically filters types for platform picker)
-* Add `outputType` for `getImage` and `getVideo`
-* Update example
+* Fixed `pickImage` and `pickVideo`
 
-## 0.1.6 - [07.02.2020]
+## 1.1.2 - [06/10/2020]
 
-* Add description
+* Fixed compatibility with iOS web browser
 
-## 0.0.5 - [07.02.2020]
+## 1.1.1 - [02/10/2020]
 
-* Add credits and ```MediaInfo```
+* Upgraded minimum sdk to `>=2.7.0`
+* Added new `ImageType.mediaInfo`
+* Made some code refacto 
 
-## 0.0.4 - [07.02.2020]
+## 1.1.0+2 - [01/09/2020]
 
-* Add full example app
+* Update README.md
 
-## 0.0.3 - [07.02.2020]
+## 1.1.0+1 - [01/09/2020]
 
-* Initial Release
-* Add parameter ```asUint8List``` for getImage
-* Add ```getVideo``` and ```getVideoInfo```
+* Format code to dartfm standard
+* Added comments
+
+## 1.1.0 - [01/09/2020]
+
+* Retake of the discontinued package [image_picker_web](https://pub.dev/packages/image_picker_web)
+* Refacto of method `getImage`
+* Added method `getMultiImages` to allow multi-image selection
+* Added a few comments for documentation generations
