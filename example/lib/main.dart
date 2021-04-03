@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
-import 'package:image_picker_web_redux/image_picker_web_redux.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 void main() => runApp(MyApp());
 

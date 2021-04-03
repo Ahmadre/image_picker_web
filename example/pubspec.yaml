@@ -14,7 +14,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  image_picker_web_redux:
+  image_picker_web:
     path: ../
 
 flutter:
