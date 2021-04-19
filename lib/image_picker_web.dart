@@ -36,13 +36,26 @@ class ImagePickerWeb {
       const MethodChannel('image_picker_web');
 
   static Future<html.File?> _pickFile(String type) async {
+    final completer = Completer<List<html.File>>();
     final html.FileUploadInputElement input = html.FileUploadInputElement();
     input.accept = '$type/*';
     input.click();
+    input.addEventListener('change', (e) async {
+      final files = input.files!;
+      final resultFuture = files.map<Future<html.File>>((file) async {
+        final reader = html.FileReader();
+        reader.readAsDataUrl(file);
+        reader.onError.listen(completer.completeError);
+        return file;
+      });
+      final results = await Future.wait(resultFuture);
+      completer.complete(results);
+    });
+    // Need to append on mobile Safari.
     html.document.body!.append(input);
-    await input.onChange.first;
-    if (input.files!.isEmpty) return null;
-    return input.files![0];
+    final results = await completer.future;
+    if (results.isEmpty) return null;
+    return results.first;
   }
 
   /// source: https://stackoverflow.com/a/59420655/9942346
@@ -52,10 +65,9 @@ class ImagePickerWeb {
     input.multiple = true;
     input.accept = '$type/*';
     input.click();
-    // onChange doesn't work on mobile safari.
     input.addEventListener('change', (e) async {
       final files = input.files!;
-      Iterable<Future<html.File>> resultsFutures = files.map((file) async {
+      final resultsFutures = files.map<Future<html.File>>((file) async {
         final reader = html.FileReader();
         reader.readAsDataUrl(file);
         reader.onError.listen(completer.completeError);
