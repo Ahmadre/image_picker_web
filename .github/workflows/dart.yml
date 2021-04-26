@@ -14,7 +14,9 @@ jobs:
     - uses: subosito/flutter-action@v1
     - run: flutter pub get
     - run: flutter format --set-exit-if-changed .
-    - run: flutter analyze .
+    - name: Analyze project source
+      run: flutter analyze
+      working-directory: ./lib
     - name: Build example
       run: flutter build web
       working-directory: example
