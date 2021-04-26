@@ -1,3 +1,7 @@
+## 2.0.2 - [27/04/2021]
+
+* Fixed issue [#22](https://github.com/Ahmadre/image_picker_web/issues/22)
+
 ## 2.0.1 - [30/03/2021]
 
 * Fixed `FutureOr<Map<String, dynamic>>` cast

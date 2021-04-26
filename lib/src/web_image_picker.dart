@@ -3,9 +3,9 @@ import 'dart:html' as html;
 
 class WebImagePicker {
   Future<Map<String, dynamic>?> pickImage() async {
-    final Map<String, dynamic> data = {};
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
-    input..accept = 'image/*';
+    final data = <String, dynamic>{};
+    final input = html.FileUploadInputElement();
+    input.accept = 'image/*';
     input.click();
     html.document.body!.append(input);
     await input.onChange.first;
@@ -23,9 +23,9 @@ class WebImagePicker {
   }
 
   Future<Map<String, dynamic>?> pickVideo() async {
-    final Map<String, dynamic> data = {};
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
-    input..accept = 'video/*';
+    final data = <String, dynamic>{};
+    final input = html.FileUploadInputElement();
+    input.accept = 'video/*';
     input.click();
     html.document.body!.append(input);
     await input.onChange.first;
