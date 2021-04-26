@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('image_picker_web');
+  const channel = MethodChannel('image_picker_web');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 

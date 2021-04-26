@@ -32,12 +32,11 @@ class ImagePickerWeb {
     });
   }
 
-  static const MethodChannel _methodChannel =
-      const MethodChannel('image_picker_web');
+  static const MethodChannel _methodChannel = MethodChannel('image_picker_web');
 
   static Future<html.File?> _pickFile(String type) async {
     final completer = Completer<List<html.File>>();
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
+    final input = html.FileUploadInputElement();
     input.accept = '$type/*';
     input.click();
     input.addEventListener('change', (e) async {
@@ -61,7 +60,7 @@ class ImagePickerWeb {
   /// source: https://stackoverflow.com/a/59420655/9942346
   Future<List<html.File>?> _pickMultiFiles(String type) async {
     final completer = Completer<List<html.File>>();
-    final html.FileUploadInputElement input = html.FileUploadInputElement();
+    final input = html.FileUploadInputElement();
     input.multiple = true;
     input.accept = '$type/*';
     input.click();
@@ -149,12 +148,16 @@ class ImagePickerWeb {
       case ImageType.file:
         return images;
       case ImageType.bytes:
-        List<Uint8List> files = [];
-        for (final img in images) files.add(await img.asBytes());
+        var files = <Uint8List>[];
+        for (final img in images) {
+          files.add(await img.asBytes());
+        }
         return files.isEmpty ? null : files;
       case ImageType.widget:
-        List<Uint8List> files = [];
-        for (final img in images) files.add(await img.asBytes());
+        var files = <Uint8List>[];
+        for (final img in images) {
+          files.add(await img.asBytes());
+        }
         if (files.isEmpty) return null;
         return files.map<Image>((e) => Image.memory(e)).toList();
       default:
