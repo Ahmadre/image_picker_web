@@ -1,9 +1,9 @@
 # ImagePickerWeb
 
 [![Issues](https://img.shields.io/github/issues/Ahmadre/image_picker_web)](https://github.com/Ahmadre/image_picker_web/issues)
-[![Forks](https://img.shields.io/github/forks/Ahmadre/image_picker_web)](https://github.com/Ahmadre/image_picker_web/network/members)
 [![Stars](https://img.shields.io/github/stars/Ahmadre/image_picker_web)](https://github.com/Ahmadre/image_picker_web/stargazers)
 [![Pub Version](https://img.shields.io/pub/v/image_picker_web?color=blue&logo=dart)](https://pub.dev/packages/image_picker_web)
+[![Flutter Web CI](https://github.com/Ahmadre/image_picker_web/actions/workflows/dart.yml/badge.svg)](https://github.com/Ahmadre/image_picker_web/actions/workflows/dart.yml)
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
