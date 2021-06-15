@@ -1,3 +1,8 @@
+## 2.0.3 - [15/06/2021]
+
+* Fixed issue [#25](https://github.com/Ahmadre/image_picker_web/issues/25) when clicking on cancel or close buttons
+* Improved example file
+
 ## 2.0.2 - [27/04/2021]
 
 * Fixed issue [#22](https://github.com/Ahmadre/image_picker_web/issues/22)
