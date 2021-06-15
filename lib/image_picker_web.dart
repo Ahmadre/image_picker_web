@@ -76,9 +76,10 @@ class ImagePickerWeb {
     // Listen focus event for cancelled
     html.window.addEventListener('focus', cancelledEventListener);
 
+    input.click();
+
     // Need to append on mobile Safari.
     html.document.body!.append(input);
-    input.click();
 
     final results = await completer.future;
     if (results == null || results.isEmpty) return null;
@@ -87,12 +88,16 @@ class ImagePickerWeb {
 
   /// source: https://stackoverflow.com/a/59420655/9942346
   Future<List<html.File>?> _pickMultiFiles(String type) async {
-    final completer = Completer<List<html.File>>();
+    final completer = Completer<List<html.File>?>();
     final input = html.FileUploadInputElement();
     input.multiple = true;
     input.accept = '$type/*';
-    input.click();
-    input.addEventListener('change', (e) async {
+
+    var changeEventTriggered = false;
+    void changeEventListener(html.Event e) {
+      if (changeEventTriggered) return;
+      changeEventTriggered = true;
+
       final files = input.files!;
       final resultsFutures = files.map<Future<html.File>>((file) async {
         final reader = html.FileReader();
@@ -100,13 +105,38 @@ class ImagePickerWeb {
         reader.onError.listen(completer.completeError);
         return file;
       });
-      final results = await Future.wait(resultsFutures);
-      completer.complete(results);
-    });
+      Future.wait(resultsFutures)
+          .then((results) => completer.complete(results));
+    }
+
+    // Cancel event management inspired by:
+    // https://github.com/miguelpruivo/flutter_file_picker/blob/master/lib/src/file_picker_web.dart
+    void cancelledEventListener(html.Event e) {
+      html.window.removeEventListener('focus', cancelledEventListener);
+
+      // This listener is called before the input changed event,
+      // and the `uploadInput.files` value is still null
+      // Wait for results from js to dart
+      Future.delayed(Duration(milliseconds: 500)).then((value) {
+        if (!changeEventTriggered) {
+          changeEventTriggered = true;
+          completer.complete(null);
+        }
+      });
+    }
+
+    input.onChange.listen(changeEventListener);
+    input.addEventListener('change', changeEventListener);
+
+    // Listen focus event for cancelled
+    html.window.addEventListener('focus', cancelledEventListener);
+
+    input.click();
+
     // Need to append on mobile Safari.
     html.document.body!.append(input);
     final results = await completer.future;
-    if (results.isEmpty) return null;
+    if (results == null || results.isEmpty) return null;
     return results;
   }
 

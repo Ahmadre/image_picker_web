@@ -41,7 +41,7 @@ class _SamplePageState extends State<SamplePage> {
         await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
     setState(() {
       _pickedImages.clear();
-      _pickedImages.addAll(images);
+      if (images != null) _pickedImages.addAll(images);
     });
   }
 
