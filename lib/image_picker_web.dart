@@ -40,7 +40,7 @@ class ImagePickerWeb {
     input.accept = '$type/*';
 
     var changeEventTriggered = false;
-    void changeEventListener(html.Event e) async {
+    void changeEventListener(html.Event e) {
       if (changeEventTriggered) return;
       changeEventTriggered = true;
 
@@ -51,8 +51,7 @@ class ImagePickerWeb {
         reader.onError.listen(completer.completeError);
         return file;
       });
-      final results = await Future.wait(resultFuture);
-      completer.complete(results);
+      Future.wait(resultFuture).then((results) => completer.complete(results));
     }
 
     // Cancel event management inspired by:
