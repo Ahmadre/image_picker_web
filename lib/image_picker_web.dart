@@ -96,7 +96,7 @@ class ImagePickerWeb {
   /// Uint8List imgBytes = await getImage(ImageType.bytes);
   /// Image imgWidget = await getImage(ImageType.widget);
   /// ```
-  static Future<dynamic> getImage({required ImageType outputType}) async {
+  static Future<Object?> getImage({required ImageType outputType}) async {
     if (!(outputType is ImageType)) {
       throw ArgumentError(
           'outputType has to be from Type: ImageType if you call getImage()');
