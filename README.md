@@ -7,17 +7,18 @@
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
-![ExampleGif](https://github.com/TesteurManiak/image_picker_web_redux/blob/master/assets/exampleupload.gif)
+![ExampleGif](https://github.com/TesteurManiak/image_picker_web/blob/master/assets/exampleupload.gif)
 
 ### Disclaimer for Videos
+
 * Till now [Mar. 2020] it's not possible (due to security reasons) to play a local video file (see also video_player_web). But you can retreive the file and upload them somewhere and play it as a network source.
 
 ## Getting Started
 
-Add ```image_picker_web_redux``` to your pubspec.yaml:
+Add ` `  ` image_picker_web `  ` ` to your pubspec.yaml:
 
 ```yaml
-    image_picker_web_redux: any
+    image_picker_web: any
 ```
 
 ## Picking Images
@@ -36,7 +37,7 @@ Load Image as Image Widget:
     }
 ```
 
-Setting ```outputType``` to ```ImageType.bytes```:
+Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
 
 ```dart
     Uint8List bytesFromPicker =
@@ -47,7 +48,7 @@ Setting ```outputType``` to ```ImageType.bytes```:
     }
 ```
 
-Setting ```outputType``` to ```ImageType.file```:
+Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
 
 ```dart
     html.File imageFile =
@@ -70,7 +71,7 @@ Load Images as Image Widgets:
     }
 ```
 
-Setting ```outputType``` to ```ImageType.bytes```:
+Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
 
 ```dart
     List<Uint8List> bytesFromPicker =
@@ -81,7 +82,7 @@ Setting ```outputType``` to ```ImageType.bytes```:
     }
 ```
 
-Setting ```outputType``` to ```ImageType.file```:
+Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
 
 ```dart
     List<html.File> imageFiles =
@@ -95,16 +96,17 @@ Setting ```outputType``` to ```ImageType.file```:
 ## How do I get all Informations out of my Image/Video (e.g. Image AND File in one run)?
 
 Besides the standard `getImage()` or `getVideo()` methods you can use the getters:
-  - `getImageInfo` or
-  - `getVideoInfo` to acheive this.
+  + `getImageInfo` or
+  + `getVideoInfo` to acheive this.
 
 **Full Example**
+
 ```dart
 import 'dart:html' as html;
  
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image_picker_web_redux/image_picker_web_redux.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
 
  html.File _cloudFile;
@@ -131,7 +133,7 @@ With `getMultipleImageInfos()` you can get all three available types in one call
 
 ## Picking Videos
 
-To load a video as html.File do:
+To load a video as html. File do:
 
 ```dart
     html.File videoFile = await ImagePickerWeb.getVideo(outputType: VideoType.file);
@@ -149,7 +151,7 @@ To load a video as Uint8List do:
     debugPrint(videoData.toString());
 ```
 
-Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as html.File!
+Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as html. File!
 
 After you uploaded your video somewhere hosted, you can retreive the network url to play it. 
 
