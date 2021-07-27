@@ -1,3 +1,7 @@
+## 2.0.3+1 - [27/06/2021]
+
+* Fixed a typo in the `README.md`
+
 ## 2.0.3 - [15/06/2021]
 
 * Fixed issue [#25](https://github.com/Ahmadre/image_picker_web/issues/25) when clicking on cancel or close buttons
