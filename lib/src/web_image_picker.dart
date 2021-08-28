@@ -5,7 +5,7 @@ class WebImagePicker {
   Future<Map<String, dynamic>?> pickImage() async {
     final data = <String, dynamic>{};
     final input = html.FileUploadInputElement();
-    input.accept = 'image/*';
+    input.accept = '*/*';
     input.click();
     html.document.body!.append(input);
     await input.onChange.first;
@@ -25,7 +25,7 @@ class WebImagePicker {
   Future<Map<String, dynamic>?> pickVideo() async {
     final data = <String, dynamic>{};
     final input = html.FileUploadInputElement();
-    input.accept = 'video/*';
+    input.accept = '*/*';
     input.click();
     html.document.body!.append(input);
     await input.onChange.first;
