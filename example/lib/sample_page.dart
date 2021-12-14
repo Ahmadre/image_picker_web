@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class SamplePage extends StatefulWidget {
   @override
@@ -14,9 +13,7 @@ class _SamplePageState extends State<SamplePage> {
   String _imageInfo = '';
 
   Future<void> _pickImage() async {
-    Image fromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
+    final fromPicker = await ImagePickerWeb.getImageAsWidget();
     if (fromPicker != null) {
       setState(() {
         _pickedImages.clear();
@@ -26,8 +23,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _pickVideo() async {
-    final videoMetaData =
-        await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
+    final videoMetaData = await ImagePickerWeb.getVideoAsBytes();
     if (videoMetaData != null) {
       setState(() {
         _pickedVideos.clear();
@@ -37,8 +33,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _pickMultiImages() async {
-    List<Image> images =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+    final images = await ImagePickerWeb.getMultiImagesAsWidget();
     setState(() {
       _pickedImages.clear();
       if (images != null) _pickedImages.addAll(images);
@@ -46,7 +41,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _getImgFile() async {
-    html.File infos = await ImagePickerWeb.getImage(outputType: ImageType.file);
+    final infos = await ImagePickerWeb.getImageAsFile();
     setState(() => _imageInfo =
         'Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
   }

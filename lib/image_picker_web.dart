@@ -150,25 +150,44 @@ class ImagePickerWeb {
   /// - [ImageType.widget] return an [Image.memory] using the image's bytes.
   ///
   /// ```dart
-  /// html.File imgFile = await getImage(ImageType.file);
-  /// Uint8List imgBytes = await getImage(ImageType.bytes);
-  /// Image imgWidget = await getImage(ImageType.widget);
+  /// html.File? imgFile = await getImage(ImageType.file);
+  /// Uint8List? imgBytes = await getImage(ImageType.bytes);
+  /// Image? imgWidget = await getImage(ImageType.widget);
   /// ```
+  @Deprecated(
+    'Use [getImageAsBytes], [getImageAsWidget] or [getImageAsFile] instead.',
+  )
   static Future<Object?> getImage({required ImageType outputType}) async {
-    if (!(outputType is ImageType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: ImageType if you call getImage()');
-    }
-    final file = await ImagePickerWeb._pickFile('image');
-    if (file == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return file;
+        return getImageAsFile();
       case ImageType.bytes:
-        return file.asBytes();
+        return getImageAsBytes();
       case ImageType.widget:
-        return Image.memory(await file.asBytes(), semanticLabel: file.name);
+        return getImageAsWidget();
     }
+  }
+
+  /// Picker that close after selecting 1 image and return a [Uint8List] of the
+  /// selected image.
+  static Future<Uint8List?> getImageAsBytes() async {
+    final file = await ImagePickerWeb._pickFile('image');
+    return file?.asBytes();
+  }
+
+  /// Picker that close after selecting 1 image and return an [Image.memory]
+  /// using the image's bytes.
+  static Future<Image?> getImageAsWidget() async {
+    final file = await ImagePickerWeb._pickFile('image');
+    return file != null
+        ? Image.memory(await file.asBytes(), semanticLabel: file.name)
+        : null;
+  }
+
+  /// Picker that close after selecting 1 image and return a [html.File] of the
+  /// selected image.
+  static Future<html.File?> getImageAsFile() {
+    return ImagePickerWeb._pickFile('image');
   }
 
   /// Help to retrieve further image's informations about your picked source.
@@ -180,47 +199,63 @@ class ImagePickerWeb {
     return MediaInfo.fromJson(data!);
   }
 
-  // Picker allow multi-image selection. Here are the different instance
+  /// Picker that allows multi-image selection. Here are the different instance
   /// of Future returned depending on [outputType] :
   ///
   /// - [ImageType.file] return a [html.File] list of the selected images.
-  ///
   /// - [ImageType.bytes] return a [Uint8List] list of the selected images.
-  ///
   /// - [ImageType.widget] return an [Image.memory] list using the images'
   /// bytes.
   ///
   /// ```dart
-  /// List<html.File> imgFiles = await getMultiImages(ImageType.file);
-  /// List<Uint8List> imgBytes = await getMultiImages(ImageType.bytes);
-  /// List<Image> imgWidgets = await getMultiImages(ImageType.widget);
+  /// List<html.File>? imgFiles = await getMultiImages(ImageType.file);
+  /// List<Uint8List>? imgBytes = await getMultiImages(ImageType.bytes);
+  /// List<Image>? imgWidgets = await getMultiImages(ImageType.widget);
   /// ```
+  @Deprecated(
+    'Use [getMultiImagesAsBytes], [getMultiImagesAsWidget] or '
+    '[getMultiImagesAsFile] instead.',
+  )
   static Future<List?> getMultiImages({required ImageType outputType}) async {
-    if (!(outputType is ImageType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: ImageType if you call getImage()');
-    }
-    final images = await ImagePickerWeb()._pickMultiFiles('image');
-    if (images == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return images;
+        return getMultiImagesAsFile();
       case ImageType.bytes:
-        var files = <Uint8List>[];
-        for (final img in images) {
-          files.add(await img.asBytes());
-        }
-        return files.isEmpty ? null : files;
+        return getMultiImagesAsBytes();
       case ImageType.widget:
-        var files = <Uint8List>[];
-        for (final img in images) {
-          files.add(await img.asBytes());
-        }
-        if (files.isEmpty) return null;
-        return files.map<Image>((e) => Image.memory(e)).toList();
-      default:
-        return null;
+        return getMultiImagesAsWidget();
     }
+  }
+
+  /// Picker that allows multi-image selection and return a [Uint8List] list of
+  /// the selected images.
+  static Future<List<Uint8List>?> getMultiImagesAsBytes() async {
+    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    if (images == null) return null;
+    var files = <Uint8List>[];
+    for (final img in images) {
+      files.add(await img.asBytes());
+    }
+    return files.isEmpty ? null : files;
+  }
+
+  /// Picker that allows multi-image selection and return an [Image.memory] list
+  /// using the images' bytes.
+  static Future<List<Image>?> getMultiImagesAsWidget() async {
+    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    if (images == null) return null;
+    var files = <Uint8List>[];
+    for (final img in images) {
+      files.add(await img.asBytes());
+    }
+    if (files.isEmpty) return null;
+    return files.map<Image>((e) => Image.memory(e)).toList();
+  }
+
+  /// Picker that allows multi-image selection and return a [html.File] list of
+  /// the selected images.
+  static Future<List<html.File>?> getMultiImagesAsFile() {
+    return ImagePickerWeb()._pickMultiFiles('image');
   }
 
   /// Picker that close after selecting 1 video. Here are the different instance
@@ -234,18 +269,31 @@ class ImagePickerWeb {
   /// html.File videoFile = await getVideo(VideoType.file);
   /// Uint8List videoBytes = await getVideo(VideoType.bytes);
   /// ```
+  @Deprecated(
+    'Use [getVideoAsBytes] or [getVideoAsFile] instead.',
+  )
   static Future<dynamic> getVideo({required VideoType outputType}) async {
     switch (outputType) {
       case VideoType.file:
-        return ImagePickerWeb._pickFile('video');
+        return getImageAsFile();
       case VideoType.bytes:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-        final imageData = base64.decode(data!['data']);
-        return imageData;
-      default:
-        return null;
+        return getVideoAsBytes();
     }
+  }
+
+  /// Picker that close after selecting 1 video and return a [Uint8List] of the
+  /// selected video.
+  static Future<Uint8List?> getVideoAsBytes() async {
+    final data =
+        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+    final imageData = base64.decode(data!['data']);
+    return imageData;
+  }
+
+  /// Picker that close after selecting 1 video and return a [html.File] of the
+  /// selected video.
+  static Future<html.File?> getVideoAsFile() {
+    return ImagePickerWeb._pickFile('video');
   }
 
   /// Help to retrieve further video's informations about your picked source.

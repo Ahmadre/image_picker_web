@@ -19,3 +19,11 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+example/ios/Runner/
+
+example/ios/Flutter/
+
+example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+
+example/android/local.properties

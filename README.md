@@ -15,82 +15,52 @@ This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List)
 
 ## Getting Started
 
-Add ` `  ` image_picker_web `  ` ` to your pubspec.yaml:
+Add `image_picker_web` to your pubspec.yaml:
 
 ```yaml
-    image_picker_web: any
+image_picker_web: any
 ```
 
 ## Picking Images
 
 ### Pick an image
 
-Load Image as Image Widget:
+Load image as `Image.memory` Widget:
 
 ```dart
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      setState(() {
-        pickedImage = fromPicker;
-      });
-    }
+Image? fromPicker = await ImagePickerWeb.getImageAsWidget();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
+Load image as bytes:
 
 ```dart
-    Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    }
+Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
+Load image as and `html.File` object :
 
 ```dart
-    html.File imageFile =
-        await ImagePickerWeb.getImage(outputType: ImageType.file);
-
-    if (imageFile != null) {
-      debugPrint(imageFile.name.toString());
-    }
+html.File? imageFile = await ImagePickerWeb.getMultiImagesAsFile();
 ```
 
 ### Pick multiple images
 
-Load Images as Image Widgets:
+Load images as a `List<Image>` :
 
 ```dart
-    List<Image> fromPicker = await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      setState(() => pickedImages = fromPicker);
-    }
+List<Image>? fromPicker = await ImagePickerWeb.getMultiImagesAsWidget();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
+Load images as bytes :
 
 ```dart
-    List<Uint8List> bytesFromPicker =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      bytesFromPicker.forEach((bytes) => debugPrint(bytes.toString()));
-    }
+List<Uint8List>? bytesFromPicker = await ImagePickerWeb.getMultiImagesAsBytes();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
+Load images as `List<html.File>` objects :
 
 ```dart
-    List<html.File> imageFiles =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
-
-    if (imageFiles != null) {
-      imageFiles.forEach((image) => debugPrint(image.name.toString()));
-    }
+List<html.File> imageFiles = await ImagePickerWeb.getMultiImagesAsFile();
 ```
 
 ## How do I get all Informations out of my Image/Video (e.g. Image AND File in one run)?
@@ -133,25 +103,19 @@ With `getMultipleImageInfos()` you can get all three available types in one call
 
 ## Picking Videos
 
-To load a video as html. File do:
+To load a video as `html.File` do:
 
 ```dart
-    html.File videoFile = await ImagePickerWeb.getVideo(outputType: VideoType.file);
-
-    debugPrint('---Picked Video File---');
-    debugPrint(videoFile.name.toString());
+html.File? videoFile = await ImagePickerWeb.getVideoAsFile();
 ```
 
-To load a video as Uint8List do:
+To load a video as `Uint8List` do:
 
 ```dart
-    Uint8List videoData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
-
-    debugPrint('---Picked Video Bytes---');
-    debugPrint(videoData.toString());
+Uint8List? videoData = await ImagePickerWeb.getVideoAsBytes();
 ```
 
-Reminder: Don't use Uint8List retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as html. File!
+**Reminder**: Don't use `Uint8List` retreivement for big video files! Flutter can't handle that. Pick bigger sized videos and high-resolution videos as `html.File` !
 
 After you uploaded your video somewhere hosted, you can retreive the network url to play it. 
 
