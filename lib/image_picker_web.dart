@@ -150,23 +150,21 @@ class ImagePickerWeb {
   /// - [ImageType.widget] return an [Image.memory] using the image's bytes.
   ///
   /// ```dart
-  /// html.File imgFile = await getImage(ImageType.file);
-  /// Uint8List imgBytes = await getImage(ImageType.bytes);
-  /// Image imgWidget = await getImage(ImageType.widget);
+  /// html.File? imgFile = await getImage(ImageType.file);
+  /// Uint8List? imgBytes = await getImage(ImageType.bytes);
+  /// Image? imgWidget = await getImage(ImageType.widget);
   /// ```
   @Deprecated(
     'Use [getImageAsBytes], [getImageAsWidget] or [getImageAsFile] instead.',
   )
   static Future<Object?> getImage({required ImageType outputType}) async {
-    final file = await ImagePickerWeb._pickFile('image');
-    if (file == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return file;
+        return getImageAsFile();
       case ImageType.bytes:
-        return file.asBytes();
+        return getImageAsBytes();
       case ImageType.widget:
-        return Image.memory(await file.asBytes(), semanticLabel: file.name);
+        return getImageAsWidget();
     }
   }
 
@@ -201,43 +199,63 @@ class ImagePickerWeb {
     return MediaInfo.fromJson(data!);
   }
 
-  // Picker allow multi-image selection. Here are the different instance
+  /// Picker that allows multi-image selection. Here are the different instance
   /// of Future returned depending on [outputType] :
   ///
   /// - [ImageType.file] return a [html.File] list of the selected images.
-  ///
   /// - [ImageType.bytes] return a [Uint8List] list of the selected images.
-  ///
   /// - [ImageType.widget] return an [Image.memory] list using the images'
   /// bytes.
   ///
   /// ```dart
-  /// List<html.File> imgFiles = await getMultiImages(ImageType.file);
-  /// List<Uint8List> imgBytes = await getMultiImages(ImageType.bytes);
-  /// List<Image> imgWidgets = await getMultiImages(ImageType.widget);
+  /// List<html.File>? imgFiles = await getMultiImages(ImageType.file);
+  /// List<Uint8List>? imgBytes = await getMultiImages(ImageType.bytes);
+  /// List<Image>? imgWidgets = await getMultiImages(ImageType.widget);
   /// ```
+  @Deprecated(
+    'Use [getMultiImagesAsBytes], [getMultiImagesAsWidget] or '
+    '[getMultiImagesAsFile] instead.',
+  )
   static Future<List?> getMultiImages({required ImageType outputType}) async {
-    final images = await ImagePickerWeb()._pickMultiFiles('image');
-    if (images == null) return null;
     switch (outputType) {
       case ImageType.file:
-        return images;
+        return getMultiImagesAsFile();
       case ImageType.bytes:
-        var files = <Uint8List>[];
-        for (final img in images) {
-          files.add(await img.asBytes());
-        }
-        return files.isEmpty ? null : files;
+        return getMultiImagesAsBytes();
       case ImageType.widget:
-        var files = <Uint8List>[];
-        for (final img in images) {
-          files.add(await img.asBytes());
-        }
-        if (files.isEmpty) return null;
-        return files.map<Image>((e) => Image.memory(e)).toList();
-      default:
-        return null;
+        return getMultiImagesAsWidget();
     }
+  }
+
+  /// Picker that allows multi-image selection and return a [Uint8List] list of
+  /// the selected images.
+  static Future<List<Uint8List>?> getMultiImagesAsBytes() async {
+    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    if (images == null) return null;
+    var files = <Uint8List>[];
+    for (final img in images) {
+      files.add(await img.asBytes());
+    }
+    return files.isEmpty ? null : files;
+  }
+
+  /// Picker that allows multi-image selection and return an [Image.memory] list
+  /// using the images' bytes.
+  static Future<List<Image>?> getMultiImagesAsWidget() async {
+    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    if (images == null) return null;
+    var files = <Uint8List>[];
+    for (final img in images) {
+      files.add(await img.asBytes());
+    }
+    if (files.isEmpty) return null;
+    return files.map<Image>((e) => Image.memory(e)).toList();
+  }
+
+  /// Picker that allows multi-image selection and return a [html.File] list of
+  /// the selected images.
+  static Future<List<html.File>?> getMultiImagesAsFile() async {
+    return await ImagePickerWeb()._pickMultiFiles('image');
   }
 
   /// Picker that close after selecting 1 video. Here are the different instance

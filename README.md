@@ -15,7 +15,7 @@ This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List)
 
 ## Getting Started
 
-Add ` `  ` image_picker_web `  ` ` to your pubspec.yaml:
+Add `image_picker_web` to your pubspec.yaml:
 
 ```yaml
     image_picker_web: any
@@ -25,38 +25,22 @@ Add ` `  ` image_picker_web `  ` ` to your pubspec.yaml:
 
 ### Pick an image
 
-Load Image as Image Widget:
+Load image as `Image.memory` Widget:
 
 ```dart
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      setState(() {
-        pickedImage = fromPicker;
-      });
-    }
+Image? fromPicker = await ImagePickerWeb.getImageAsWidget();
 ```
 
-Setting `outputType` to `ImageType.bytes` :
+Load image as bytes:
 
 ```dart
-    Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    }
+Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
+Load image as and `html.File` object :
 
 ```dart
-    html.File imageFile =
-        await ImagePickerWeb.getImage(outputType: ImageType.file);
-
-    if (imageFile != null) {
-      debugPrint(imageFile.name.toString());
-    }
+html.File? imageFile = await ImagePickerWeb.getMultiImagesAsFile();
 ```
 
 ### Pick multiple images
@@ -71,7 +55,7 @@ Load Images as Image Widgets:
     }
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
+Setting `outputType` to `ImageType.bytes` :
 
 ```dart
     List<Uint8List> bytesFromPicker =

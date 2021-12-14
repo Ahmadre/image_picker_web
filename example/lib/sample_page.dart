@@ -34,8 +34,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _pickMultiImages() async {
-    List<Image> images =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
+    final images = await ImagePickerWeb.getMultiImagesAsWidget();
     setState(() {
       _pickedImages.clear();
       if (images != null) _pickedImages.addAll(images);
