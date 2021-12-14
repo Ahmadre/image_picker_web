@@ -45,36 +45,22 @@ html.File? imageFile = await ImagePickerWeb.getMultiImagesAsFile();
 
 ### Pick multiple images
 
-Load Images as Image Widgets:
+Load images as a `List<Image>` :
 
 ```dart
-    List<Image> fromPicker = await ImagePickerWeb.getMultiImages(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      setState(() => pickedImages = fromPicker);
-    }
+List<Image>? fromPicker = await ImagePickerWeb.getMultiImagesAsWidget();
 ```
 
-Setting `outputType` to `ImageType.bytes` :
+Load images as bytes :
 
 ```dart
-    List<Uint8List> bytesFromPicker =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      bytesFromPicker.forEach((bytes) => debugPrint(bytes.toString()));
-    }
+List<Uint8List>? bytesFromPicker = await ImagePickerWeb.getMultiImagesAsBytes();
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.file `  ` ` :
+Load images as `List<html.File>` objects :
 
 ```dart
-    List<html.File> imageFiles =
-        await ImagePickerWeb.getMultiImages(outputType: ImageType.file);
-
-    if (imageFiles != null) {
-      imageFiles.forEach((image) => debugPrint(image.name.toString()));
-    }
+List<html.File> imageFiles = await ImagePickerWeb.getMultiImagesAsFile();
 ```
 
 ## How do I get all Informations out of my Image/Video (e.g. Image AND File in one run)?
