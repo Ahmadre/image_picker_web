@@ -37,7 +37,7 @@ Load Image as Image Widget:
     }
 ```
 
-Setting ` `  ` outputType `  `  ` to `  `  ` ImageType.bytes `  ` ` :
+Setting `outputType` to `ImageType.bytes` :
 
 ```dart
     Uint8List bytesFromPicker =

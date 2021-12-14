@@ -154,11 +154,10 @@ class ImagePickerWeb {
   /// Uint8List imgBytes = await getImage(ImageType.bytes);
   /// Image imgWidget = await getImage(ImageType.widget);
   /// ```
+  @Deprecated(
+    'Use [getImageAsBytes], [getImageAsWidget] or [getImageAsFile] instead.',
+  )
   static Future<Object?> getImage({required ImageType outputType}) async {
-    if (!(outputType is ImageType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: ImageType if you call getImage()');
-    }
     final file = await ImagePickerWeb._pickFile('image');
     if (file == null) return null;
     switch (outputType) {
@@ -169,6 +168,28 @@ class ImagePickerWeb {
       case ImageType.widget:
         return Image.memory(await file.asBytes(), semanticLabel: file.name);
     }
+  }
+
+  /// Picker that close after selecting 1 image and return a [Uint8List] of the
+  /// selected image.
+  static Future<Uint8List?> getImageAsBytes() async {
+    final file = await ImagePickerWeb._pickFile('image');
+    return file?.asBytes();
+  }
+
+  /// Picker that close after selecting 1 image and return an [Image.memory]
+  /// using the image's bytes.
+  static Future<Image?> getImageAsWidget() async {
+    final file = await ImagePickerWeb._pickFile('image');
+    return file != null
+        ? Image.memory(await file.asBytes(), semanticLabel: file.name)
+        : null;
+  }
+
+  /// Picker that close after selecting 1 image and return a [html.File] of the
+  /// selected image.
+  static Future<html.File?> getImageAsFile() async {
+    return await ImagePickerWeb._pickFile('image');
   }
 
   /// Help to retrieve further image's informations about your picked source.
@@ -196,10 +217,6 @@ class ImagePickerWeb {
   /// List<Image> imgWidgets = await getMultiImages(ImageType.widget);
   /// ```
   static Future<List?> getMultiImages({required ImageType outputType}) async {
-    if (!(outputType is ImageType)) {
-      throw ArgumentError(
-          'outputType has to be from Type: ImageType if you call getImage()');
-    }
     final images = await ImagePickerWeb()._pickMultiFiles('image');
     if (images == null) return null;
     switch (outputType) {
