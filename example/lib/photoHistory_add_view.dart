@@ -102,8 +102,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       _pageStatus = PageStatus.LOADING;
     });
 
-    final image =
-        (await ImagePickerWeb.getImage(outputType: ImageType.widget)) as Image;
+    final image = await ImagePickerWeb.getImageAsWidget();
     print(image);
 
     if (image != null) {
