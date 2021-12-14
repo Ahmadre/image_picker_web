@@ -186,8 +186,8 @@ class ImagePickerWeb {
 
   /// Picker that close after selecting 1 image and return a [html.File] of the
   /// selected image.
-  static Future<html.File?> getImageAsFile() async {
-    return await ImagePickerWeb._pickFile('image');
+  static Future<html.File?> getImageAsFile() {
+    return ImagePickerWeb._pickFile('image');
   }
 
   /// Help to retrieve further image's informations about your picked source.
@@ -254,8 +254,8 @@ class ImagePickerWeb {
 
   /// Picker that allows multi-image selection and return a [html.File] list of
   /// the selected images.
-  static Future<List<html.File>?> getMultiImagesAsFile() async {
-    return await ImagePickerWeb()._pickMultiFiles('image');
+  static Future<List<html.File>?> getMultiImagesAsFile() {
+    return ImagePickerWeb()._pickMultiFiles('image');
   }
 
   /// Picker that close after selecting 1 video. Here are the different instance
@@ -269,18 +269,31 @@ class ImagePickerWeb {
   /// html.File videoFile = await getVideo(VideoType.file);
   /// Uint8List videoBytes = await getVideo(VideoType.bytes);
   /// ```
+  @Deprecated(
+    'Use [getVideoAsBytes] or [getVideoAsFile] instead.',
+  )
   static Future<dynamic> getVideo({required VideoType outputType}) async {
     switch (outputType) {
       case VideoType.file:
-        return ImagePickerWeb._pickFile('video');
+        return getImageAsFile();
       case VideoType.bytes:
-        final data =
-            await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-        final imageData = base64.decode(data!['data']);
-        return imageData;
-      default:
-        return null;
+        return getVideoAsBytes();
     }
+  }
+
+  /// Picker that close after selecting 1 video and return a [Uint8List] of the
+  /// selected video.
+  static Future<Uint8List?> getVideoAsBytes() async {
+    final data =
+        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+    final imageData = base64.decode(data!['data']);
+    return imageData;
+  }
+
+  /// Picker that close after selecting 1 video and return a [html.File] of the
+  /// selected video.
+  static Future<html.File?> getVideoAsFile() {
+    return ImagePickerWeb._pickFile('video');
   }
 
   /// Help to retrieve further video's informations about your picked source.

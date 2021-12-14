@@ -1,3 +1,8 @@
+## 2.1.0 - [14/12/2021]
+
+* Deprecated `getImage`,  `getMultiImages` and `getVideo` methods.
+* Added methods `getImageAsBytes`, `getImageAsWidget`, `getImageAsFile`, `getMultiImagesAsBytes`, `getMultiImagesAsWidget`, `getMultiImagesAsFile`,  `getVideoAsFile` and `getVideoAsBytes` ([#29](https://github.com/Ahmadre/image_picker_web/issues/29))
+
 ## 2.0.3+1 - [27/06/2021]
 
 * Fixed a typo in the `README.md`

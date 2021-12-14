@@ -23,8 +23,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _pickVideo() async {
-    final videoMetaData =
-        await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
+    final videoMetaData = await ImagePickerWeb.getVideoAsBytes();
     if (videoMetaData != null) {
       setState(() {
         _pickedVideos.clear();
