@@ -7,4 +7,8 @@ class ImageAllTypes {
   Image? imageAsImage;
   html.File? imageAsFile;
   Uint8List? imageAsRaw;
+
+  Image? get image => imageAsImage;
+  html.File? get htmlFmage => imageAsFile;
+  Uint8List? get unit8List => imageAsRaw;
 }
