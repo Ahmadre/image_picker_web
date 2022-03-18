@@ -1,6 +1,5 @@
-import 'dart:html' as html;
 import 'dart:typed_data';
-
+import 'dart:html' as html;
 import 'package:flutter/widgets.dart';
 
 class ImageAllTypes {
