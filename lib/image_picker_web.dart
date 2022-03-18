@@ -15,6 +15,7 @@ import 'src/extensions/file_extensions.dart' show FileModifier;
 import 'src/web_image_picker.dart';
 
 export 'src/Models/Types.dart';
+export 'src/Models/AllTypes.dart';
 
 class ImagePickerWeb {
   static void registerWith(Registrar registrar) {
