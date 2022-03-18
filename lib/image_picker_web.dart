@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:image_picker_web/src/Models/AllTypes.dart';
 
 import 'src/Models/Types.dart';
 import 'src/extensions/file_extensions.dart' show FileModifier;
@@ -170,6 +171,18 @@ class ImagePickerWeb {
 
   /// Picker that close after selecting 1 image and return a [Uint8List] of the
   /// selected image.
+  ///
+
+  static Future<ImageAllTypes> getAllTypesOfImage() async {
+    final file = await ImagePickerWeb._pickFile('image');
+    final image = file != null
+        ? Image.memory(await file.asBytes(), semanticLabel: file.name)
+        : null;
+    final raw = await file?.asBytes();
+
+    return ImageAllTypes(file, image, raw);
+  }
+
   static Future<Uint8List?> getImageAsBytes() async {
     final file = await ImagePickerWeb._pickFile('image');
     return file?.asBytes();
