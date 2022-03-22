@@ -286,8 +286,11 @@ class ImagePickerWeb {
   static Future<Uint8List?> getVideoAsBytes() async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    final imageData = base64.decode(data!['data']);
-    return imageData;
+    if (data != null) {
+      final imageData = base64.decode(data['data']);
+      return imageData;
+    }
+    return null;
   }
 
   /// Picker that close after selecting 1 video and return a [html.File] of the
@@ -299,9 +302,10 @@ class ImagePickerWeb {
   /// Help to retrieve further video's informations about your picked source.
   ///
   /// Return an object [MediaInfo] containing video's informations.
-  static Future<MediaInfo> get getVideoInfo async {
+  static Future<MediaInfo?> get getVideoInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    return MediaInfo.fromJson(data!);
+    if (data != null) return MediaInfo.fromJson(data);
+    return null;
   }
 }
