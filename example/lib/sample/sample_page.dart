@@ -48,12 +48,12 @@ class _SamplePageState extends State<SamplePage> {
 
   Future<void> _getImgInfo() async {
     final infos = await ImagePickerWeb.getImageInfo;
-    final data = infos.data;
+    final data = infos?.data;
     if (data != null) {
       setState(() {
         _pickedImages.clear();
-        _pickedImages.add(Image.memory(data, semanticLabel: infos.fileName));
-        _imageInfo = '${infos.toJson()}';
+        _pickedImages.add(Image.memory(data, semanticLabel: infos?.fileName));
+        _imageInfo = '${infos?.toJson()}';
       });
     }
   }

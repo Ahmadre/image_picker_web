@@ -1,3 +1,8 @@
+## 2.1.1 - [22/03/2022]
+
+* Updated example project to null safety.
+* Fixed potential issue with null value for methods `getImageInfo`, `getVideoAsBytes` and `getVideoInfo`.
+
 ## 2.1.0 - [14/12/2021]
 
 * Deprecated `getImage`,  `getMultiImages` and `getVideo` methods.
