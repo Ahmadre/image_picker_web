@@ -43,19 +43,19 @@ class _SamplePageState extends State<SamplePage> {
   Future<void> _getImgFile() async {
     final infos = await ImagePickerWeb.getImageAsFile();
     setState(() => _imageInfo =
-        'Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
+        'Name: ${infos?.name}\nRelative Path: ${infos?.relativePath}');
   }
 
   Future<void> _getImgInfo() async {
     final infos = await ImagePickerWeb.getImageInfo;
-    setState(() {
-      _pickedImages.clear();
-      _pickedImages.add(Image.memory(
-        infos.data,
-        semanticLabel: infos.fileName,
-      ));
-      _imageInfo = '${infos.toJson()}';
-    });
+    final data = infos.data;
+    if (data != null) {
+      setState(() {
+        _pickedImages.clear();
+        _pickedImages.add(Image.memory(data, semanticLabel: infos.fileName));
+        _imageInfo = '${infos.toJson()}';
+      });
+    }
   }
 
   @override
@@ -81,10 +81,8 @@ class _SamplePageState extends State<SamplePage> {
                       height: 200,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              _pickedImages == null ? 0 : _pickedImages.length,
-                          itemBuilder: (context, index) =>
-                              _pickedImages[index]),
+                          itemCount: _pickedImages.length,
+                          itemBuilder: (_, index) => _pickedImages[index]),
                     ),
                   ),
                   Container(
