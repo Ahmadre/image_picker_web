@@ -15,14 +15,37 @@ class BigVideoUploadView extends StatefulWidget {
 class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   VideoPlayerController _controller;
 
+  Future<void> _createVideo(Uint8List bytes) async {
+    final blob = html.Blob([bytes]);
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    _controller = VideoPlayerController.network(url);
+    await _controller.initialize();
+    setState(() {});
+  }
+
   Future<Uint8List> _loadImage(html.File file) async {
     final reader = html.FileReader();
     reader.readAsArrayBuffer(file);
-    final timer = Stopwatch()..start();
     await reader.onLoad.first;
+    reader.onLoadEnd;
+    return reader.result as Uint8List;
+  }
+
+  Future<void> _pickAndLoadVideo() async {
+    final timer = Stopwatch()..start();
+    final file = await ImagePickerWeb.getVideoAsFile();
+    final bytes = await _loadImage(file);
     timer.stop();
     print('Loaded in ${timer.elapsedMilliseconds}ms');
-    return reader.result as Uint8List;
+    await _createVideo(bytes);
+  }
+
+  Future<void> _readAndLoadVideo() async {
+    final timer = Stopwatch()..start();
+    final bytes = await ImagePickerWeb.getVideoAsBytes();
+    timer.stop();
+    print('Loaded in ${timer.elapsedMilliseconds}ms');
+    await _createVideo(bytes);
   }
 
   @override
@@ -62,16 +85,13 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
                 child: VideoPlayer(_controller),
               ),
             ElevatedButton(
-              onPressed: () async {
-                final file = await ImagePickerWeb.getVideoAsFile();
-                final bytes = await _loadImage(file);
-                final blob = html.Blob([bytes]);
-                final url = html.Url.createObjectUrlFromBlob(blob);
-                _controller = VideoPlayerController.network(url);
-                await _controller.initialize();
-                setState(() {});
-              },
-              child: Text('Upload Video'),
+              onPressed: _pickAndLoadVideo,
+              child: Text('Load Video with FileReader'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _readAndLoadVideo,
+              child: Text('Load Video with getVideoAsBytes'),
             ),
           ],
         ),
