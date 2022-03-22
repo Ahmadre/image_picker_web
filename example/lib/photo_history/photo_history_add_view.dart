@@ -9,7 +9,7 @@ class PhotosHistoryAddPage extends StatelessWidget {
   Widget build(BuildContext context) => ImagePickerWidget();
 }
 
-enum PageStatus { LOADING, ERROR, LOADED }
+enum PageStatus { loading, error, loaded }
 
 class ImagePickerWidget extends StatefulWidget {
   @override
@@ -18,12 +18,12 @@ class ImagePickerWidget extends StatefulWidget {
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   final _photos = <Image>[];
-  PageStatus _pageStatus = PageStatus.LOADED;
+  PageStatus _pageStatus = PageStatus.loaded;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sample 2')),
+      appBar: AppBar(title: Text('Photo History')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +53,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               },
             ),
           ),
-          if (_pageStatus == PageStatus.LOADED)
+          if (_pageStatus == PageStatus.loaded)
             Container(
               margin: EdgeInsets.all(16),
               child: ElevatedButton(
@@ -67,7 +67,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   }
 
   InkWell _buildAddPhoto() {
-    if (_pageStatus == PageStatus.LOADING) {
+    if (_pageStatus == PageStatus.loading) {
       return InkWell(
         onTap: () => null,
         child: Container(
@@ -99,7 +99,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   Future<void> _onAddPhotoClicked(context) async {
     setState(() {
-      _pageStatus = PageStatus.LOADING;
+      _pageStatus = PageStatus.loading;
     });
 
     final image = await ImagePickerWeb.getImageAsWidget();
@@ -108,11 +108,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     if (image != null) {
       setState(() {
         _photos.add(image);
-        _pageStatus = PageStatus.LOADED;
+        _pageStatus = PageStatus.loaded;
       });
     } else {
       setState(() {
-        _pageStatus = PageStatus.LOADED;
+        _pageStatus = PageStatus.loaded;
       });
     }
   }

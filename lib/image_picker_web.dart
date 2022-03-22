@@ -193,10 +193,11 @@ class ImagePickerWeb {
   /// Help to retrieve further image's informations about your picked source.
   ///
   /// Return an object [MediaInfo] containing image's informations.
-  static Future<MediaInfo> get getImageInfo async {
+  static Future<MediaInfo?> get getImageInfo async {
     final data =
         await (_methodChannel.invokeMapMethod<String, dynamic>('pickImage'));
-    return MediaInfo.fromJson(data!);
+    if (data == null) return null;
+    return MediaInfo.fromJson(data);
   }
 
   /// Picker that allows multi-image selection. Here are the different instance
@@ -286,7 +287,8 @@ class ImagePickerWeb {
   static Future<Uint8List?> getVideoAsBytes() async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    final imageData = base64.decode(data!['data']);
+    if (data == null) return null;
+    final imageData = base64.decode(data['data']);
     return imageData;
   }
 
@@ -299,9 +301,10 @@ class ImagePickerWeb {
   /// Help to retrieve further video's informations about your picked source.
   ///
   /// Return an object [MediaInfo] containing video's informations.
-  static Future<MediaInfo> get getVideoInfo async {
+  static Future<MediaInfo?> get getVideoInfo async {
     final data =
         await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    return MediaInfo.fromJson(data!);
+    if (data == null) return null;
+    return MediaInfo.fromJson(data);
   }
 }
