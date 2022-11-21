@@ -236,4 +236,16 @@ class ImagePickerWeb {
     if (data == null) return null;
     return MediaInfo.fromJson(data);
   }
+
+  /// Picker that allows multi-video selection and return a [Uint8List] list of
+  /// the selected videos.
+  static Future<List<Uint8List>?> getMultiVideosAsBytes() async {
+    final videos = await ImagePickerWeb()._pickMultiFiles('video');
+    if (videos == null) return null;
+    var files = <Uint8List>[];
+    for (final video in videos) {
+      files.add(await video.asBytes());
+    }
+    return files.isEmpty ? null : files;
+  }
 }
