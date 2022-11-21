@@ -1,4 +1,4 @@
-## 3.0.0 - [/11/2022]
+## 3.0.0 - [XX/11/2022]
 
 * **[BREAKING CHANGES]** Bumped Dart SDK to version `2.18.0`
 * **[BREAKING CHANGES]** Removed deprecated methods `getImage`, `getMultiImages` and `getVideo`
