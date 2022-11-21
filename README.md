@@ -7,7 +7,7 @@
 
 This Web-Plugin allows Flutter Web to pick images (as File, Widget or Uint8List) and videos (as File or Uint8List). Many thanks goes to [AlvaroVasconcelos](https://github.com/AlvaroVasconcelos) for the implementation of picking images in his plugin: [flutter_web_image_picker](https://github.com/AlvaroVasconcelos/flutter_web_image_picker) 
 
-![ExampleGif](https://github.com/TesteurManiak/image_picker_web/blob/master/assets/exampleupload.gif)
+![ExampleGif](https://raw.githubusercontent.com/Ahmadre/image_picker_web/master/assets/exampleupload.gif)
 
 ### Disclaimer for Videos
 
@@ -122,3 +122,17 @@ After you uploaded your video somewhere hosted, you can retreive the network url
 ### MediaInfos
 
 * The methods ```getVideoInfo``` and ```getImageInfo``` are also available and you can use them to retreive further informations about your picked source.
+
+### Pick multiple images
+
+Load videos as bytes:
+
+```dart
+List<Uint8List>? videos = ImagePickerWeb.getMultiVideosAsBytes();
+```
+
+Load videos as `List<html.File>` objects :
+
+```dart
+List<html.File>? videoFiles = await ImagePickerWeb.getMultiVideosAsFile();
+```
