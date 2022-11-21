@@ -1,6 +1,7 @@
 ## 3.0.0 - [XX/11/2022]
 
 * **[BREAKING CHANGES]** Removed deprecated methods `getImage`, `getMultiImages` and `getVideo`
+* Added methods `getMultiVideosAsBytes`, `getMultiVideosAsFile`
 
 ## 2.1.1 - [22/03/2022]
 

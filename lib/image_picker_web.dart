@@ -202,15 +202,6 @@ class ImagePickerWeb {
     return ImagePickerWeb()._pickMultiFiles('image');
   }
 
-  static Future<dynamic> getVideo({required VideoType outputType}) async {
-    switch (outputType) {
-      case VideoType.file:
-        return getImageAsFile();
-      case VideoType.bytes:
-        return getVideoAsBytes();
-    }
-  }
-
   /// Picker that close after selecting 1 video and return a [Uint8List] of the
   /// selected video.
   static Future<Uint8List?> getVideoAsBytes() async {
@@ -247,5 +238,11 @@ class ImagePickerWeb {
       files.add(await video.asBytes());
     }
     return files.isEmpty ? null : files;
+  }
+
+  /// Picker that allows multi-video selection and return a [html.File] list of
+  /// the selected videos.
+  static Future<List<html.File>?> getMultiVideosAsFile() {
+    return ImagePickerWeb()._pickMultiFiles('video');
   }
 }

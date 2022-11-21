@@ -23,7 +23,7 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
     setState(() {});
   }
 
-  Future<Uint8List> _loadImage(html.File file) async {
+  Future<Uint8List> _load(html.File file) async {
     final reader = html.FileReader();
     reader.readAsArrayBuffer(file);
     await reader.onLoad.first;
@@ -34,7 +34,7 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   Future<void> _pickAndLoadVideo() async {
     final file = await ImagePickerWeb.getVideoAsFile();
     if (file != null) {
-      final bytes = await _loadImage(file);
+      final bytes = await _load(file);
       await _createVideo(bytes);
     }
   }
