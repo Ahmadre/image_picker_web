@@ -40,7 +40,7 @@ Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
 Load image as and `html.File` object :
 
 ```dart
-html.File? imageFile = await ImagePickerWeb.getMultiImagesAsFile();
+html.File? imageFile = (await ImagePickerWeb.getMultiImagesAsFile())?[0];
 ```
 
 ### Pick multiple images
