@@ -1,3 +1,7 @@
+## 3.1.1
+
+* Fixed `MediaInfo.fromJson` parsing and added unit tests
+
 ## 3.1.0
 
 * Updated Dart SDK constraint to `>=3.0.0 <4.0.0`

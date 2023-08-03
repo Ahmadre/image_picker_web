@@ -11,24 +11,22 @@ class MediaInfo {
     this.data,
   });
 
-  /// Factory constructor to generate [MediaInfo] from [Map<String, dynamic>].
+  /// Factory constructor to generate [MediaInfo] from a [Map].
   factory MediaInfo.fromJson(Map<String, dynamic> json) {
-    switch (json) {
-      case {
-          'name': final String? name,
-          'base64': final String? base64,
-          'data_scheme': final String? dataScheme,
-          'data': final String data,
-        }:
-        return MediaInfo(
-          fileName: name,
-          base64: base64,
-          base64WithScheme: dataScheme,
-          data: base64Decode(data),
-        );
-      default:
-        throw const FormatException('Invalid media info format');
+    final name = json['name'];
+    final dataScheme = json['data_scheme'];
+    final data = json['data'];
+
+    if (name is! String? || dataScheme is! String? || data is! String?) {
+      throw const FormatException('Invalid media info format');
     }
+
+    return MediaInfo(
+      fileName: name,
+      base64: data,
+      base64WithScheme: dataScheme,
+      data: data != null ? base64Decode(data) : null,
+    );
   }
 
   /// Name of the file.
@@ -43,12 +41,14 @@ class MediaInfo {
   /// File's bytes data.
   final Uint8List? data;
 
-  /// Convert [MediaInfo] to [Map<String, dynamic>] format
-  Map<String, dynamic> toJson() => {
-        'name': fileName,
-        'data': base64,
-        'data_scheme': base64WithScheme,
-      };
+  /// Convert [MediaInfo] to JSON format
+  Map<String, dynamic> toJson() {
+    return {
+      'name': fileName,
+      'data': base64,
+      'data_scheme': base64WithScheme,
+    };
+  }
 }
 
 /// Image's type.
