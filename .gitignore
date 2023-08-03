@@ -27,3 +27,5 @@ example/ios/Flutter/
 example/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 
 example/android/local.properties
+
+custom_lint.log

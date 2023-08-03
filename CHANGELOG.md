@@ -1,3 +1,9 @@
+## 3.1.0
+
+* Updated Dart SDK constraint to `>=3.0.0 <4.0.0`
+* Updated linting rules
+* Changed license to MIT
+
 ## 3.0.0+1
 
 * Fixed README.md

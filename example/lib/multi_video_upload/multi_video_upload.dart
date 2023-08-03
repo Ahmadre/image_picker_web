@@ -19,7 +19,7 @@ class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
     for (final bytes in bytesList) {
       final blob = html.Blob([bytes]);
       final url = html.Url.createObjectUrlFromBlob(blob);
-      final controller = VideoPlayerController.network(url);
+      final controller = VideoPlayerController.networkUrl(Uri.parse(url));
       await controller.initialize();
       _controllers.add(controller);
     }

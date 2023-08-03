@@ -18,7 +18,7 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   Future<void> _createVideo(Uint8List bytes) async {
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);
-    _controller = VideoPlayerController.network(url);
+    _controller = VideoPlayerController.networkUrl(Uri.parse(url));
     await _controller?.initialize();
     setState(() {});
   }
