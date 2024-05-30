@@ -47,7 +47,7 @@ class _SamplePageState extends State<SamplePage> {
   }
 
   Future<void> _getImgInfo() async {
-    final infos = await ImagePickerWeb.getImageInfo;
+    final infos = await ImagePickerWeb.getImageInfo();
     final data = infos?.data;
     if (data != null) {
       setState(() {
