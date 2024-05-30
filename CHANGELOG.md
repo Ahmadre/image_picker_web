@@ -1,3 +1,10 @@
+## 4.0.0
+
+* 50 after clicking the image picker the dialog appears but when clicking on cancel the loader is not dismissing by @TesteurManiak in https://github.com/Ahmadre/image_picker_web/pull/51
+* Removed `WebImagePicker`, `getImageInfo` and `getVideoInfo` became methods (Check the [migration guide](https://github.com/Ahmadre/image_picker_web?tab=readme-ov-file#from-300-to-400) for more info)
+
+**Full Changelog**: https://github.com/Ahmadre/image_picker_web/compare/3.1.1...4.0.0
+
 ## 3.1.1
 
 * Fixed `MediaInfo.fromJson` parsing and added unit tests
