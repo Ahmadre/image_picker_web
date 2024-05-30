@@ -1,40 +1,39 @@
 library image_picker_web;
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:html' as html;
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:image_picker_web/src/extensions/file_extensions.dart'
-    show FileModifier;
 import 'package:image_picker_web/src/models/media_info.dart';
-import 'package:image_picker_web/src/web_image_picker.dart';
 
 export 'src/models/media_info.dart';
 
 class ImagePickerWeb {
+  const ImagePickerWeb._();
+
   static void registerWith(Registrar registrar) {
-    final channel = MethodChannel(
-      'image_picker_web',
-      const StandardMethodCodec(),
-      registrar,
-    );
-    final instance = WebImagePicker();
-    channel.setMethodCallHandler((call) async {
+    MethodChannel('image_picker_web', const StandardMethodCodec(), registrar)
+        .setMethodCallHandler((call) {
       switch (call.method) {
         case 'pickImage':
-          return instance.pickImage();
+          return getImageAsFile();
         case 'pickVideo':
-          return instance.pickVideo();
+          return getVideoAsFile();
+        case 'pickMultiImage':
+          return getMultiImagesAsFile();
+        case 'pickMultiVideo':
+          return getMultiVideosAsFile();
+        case 'pickImageInfo':
+          return getImageInfo();
+        case 'pickVideoInfo':
+          return getVideoInfo();
         default:
           throw MissingPluginException();
       }
     });
   }
-
-  static const MethodChannel _methodChannel = MethodChannel('image_picker_web');
 
   static Future<html.File?> _pickFile(String type) async {
     final completer = Completer<List<html.File>?>();
@@ -87,8 +86,25 @@ class ImagePickerWeb {
     return results.first;
   }
 
+  static Future<Map<String, dynamic>?> _pickFileInfo(String type) async {
+    final file = await ImagePickerWeb._pickFile(type);
+    if (file == null) return null;
+    final reader = html.FileReader()..readAsDataUrl(file);
+    await reader.onLoad.first;
+    final encoded = reader.result;
+    if (encoded is! String) return null;
+    final stripped =
+        encoded.replaceFirst(RegExp('data:$type/[^;]+;base64,'), '');
+    final fileName = file.name;
+    return <String, dynamic>{
+      'name': fileName,
+      'data': stripped,
+      'data_scheme': encoded,
+    };
+  }
+
   /// source: https://stackoverflow.com/a/59420655/9942346
-  Future<List<html.File>?> _pickMultiFiles(String type) async {
+  static Future<List<html.File>?> _pickMultiFiles(String type) async {
     final completer = Completer<List<html.File>?>();
     final input = html.FileUploadInputElement()
       ..multiple = true
@@ -164,9 +180,8 @@ class ImagePickerWeb {
   /// Help to retrieve further image's informations about your picked source.
   ///
   /// Return an object [MediaInfo] containing image's informations.
-  static Future<MediaInfo?> get getImageInfo async {
-    final data =
-        await _methodChannel.invokeMapMethod<String, dynamic>('pickImage');
+  static Future<MediaInfo?> getImageInfo() async {
+    final data = await _pickFileInfo('image');
     if (data == null) return null;
     return MediaInfo.fromJson(data);
   }
@@ -174,7 +189,7 @@ class ImagePickerWeb {
   /// Picker that allows multi-image selection and return a [Uint8List] list of
   /// the selected images.
   static Future<List<Uint8List>?> getMultiImagesAsBytes() async {
-    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    final images = await _pickMultiFiles('image');
     if (images == null) return null;
     final files = <Uint8List>[];
     for (final img in images) {
@@ -186,7 +201,7 @@ class ImagePickerWeb {
   /// Picker that allows multi-image selection and return an [Image.memory] list
   /// using the images' bytes.
   static Future<List<Image>?> getMultiImagesAsWidget() async {
-    final images = await ImagePickerWeb()._pickMultiFiles('image');
+    final images = await _pickMultiFiles('image');
     if (images == null) return null;
     final files = <Uint8List>[];
     for (final img in images) {
@@ -199,32 +214,25 @@ class ImagePickerWeb {
   /// Picker that allows multi-image selection and return a [html.File] list of
   /// the selected images.
   static Future<List<html.File>?> getMultiImagesAsFile() {
-    return ImagePickerWeb()._pickMultiFiles('image');
+    return _pickMultiFiles('image');
   }
 
   /// Picker that close after selecting 1 video and return a [Uint8List] of the
   /// selected video.
   static Future<Uint8List?> getVideoAsBytes() async {
-    final dataMap =
-        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
-    final data = dataMap?['data'];
-    if (data == null || data is! String) return null;
-    final imageData = base64.decode(data);
-    return imageData;
+    final video = await _pickFile('video');
+    return video?.asBytes();
   }
 
   /// Picker that close after selecting 1 video and return a [html.File] of the
   /// selected video.
-  static Future<html.File?> getVideoAsFile() {
-    return ImagePickerWeb._pickFile('video');
-  }
+  static Future<html.File?> getVideoAsFile() => _pickFile('video');
 
   /// Help to retrieve further video's informations about your picked source.
   ///
   /// Return an object [MediaInfo] containing video's informations.
-  static Future<MediaInfo?> get getVideoInfo async {
-    final data =
-        await _methodChannel.invokeMapMethod<String, dynamic>('pickVideo');
+  static Future<MediaInfo?> getVideoInfo() async {
+    final data = await _pickFileInfo('video');
     if (data == null) return null;
     return MediaInfo.fromJson(data);
   }
@@ -232,7 +240,7 @@ class ImagePickerWeb {
   /// Picker that allows multi-video selection and return a [Uint8List] list of
   /// the selected videos.
   static Future<List<Uint8List>?> getMultiVideosAsBytes() async {
-    final videos = await ImagePickerWeb()._pickMultiFiles('video');
+    final videos = await _pickMultiFiles('video');
     if (videos == null) return null;
     final files = <Uint8List>[];
     for (final video in videos) {
@@ -244,6 +252,28 @@ class ImagePickerWeb {
   /// Picker that allows multi-video selection and return a [html.File] list of
   /// the selected videos.
   static Future<List<html.File>?> getMultiVideosAsFile() {
-    return ImagePickerWeb()._pickMultiFiles('video');
+    return _pickMultiFiles('video');
+  }
+}
+
+typedef _ByteResult = FutureOr<List<int>>;
+
+extension on html.File {
+  Future<Uint8List> asBytes() async {
+    final bytesFile = Completer<List<int>>();
+    final reader = html.FileReader();
+    reader.onLoad.listen(
+      (_) {
+        final result = reader.result;
+        if (result is! _ByteResult?) {
+          bytesFile.completeError('Result is not a byte result');
+          return;
+        }
+
+        bytesFile.complete(result);
+      },
+    );
+    reader.readAsArrayBuffer(this);
+    return Uint8List.fromList(await bytesFile.future);
   }
 }
