@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'dart:typed_data';
 
 /// Class used to return informations retrieved from an image or video.
@@ -9,7 +8,13 @@ class MediaInfo {
     this.base64,
     this.base64WithScheme,
     this.data,
-  });
+  }) : assert(
+          fileName != null ||
+              base64 != null ||
+              base64WithScheme != null ||
+              data != null,
+          'At least one parameter must be not null.',
+        );
 
   /// Factory constructor to generate [MediaInfo] from a [Map].
   factory MediaInfo.fromJson(Map<String, dynamic> json) {
@@ -50,9 +55,3 @@ class MediaInfo {
     };
   }
 }
-
-/// Image's type.
-enum ImageType { file, bytes, widget }
-
-/// Video's type.
-enum VideoType { file, bytes }

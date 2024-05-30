@@ -136,3 +136,10 @@ Load videos as `List<html.File>` objects :
 ```dart
 List<html.File>? videoFiles = await ImagePickerWeb.getMultiVideosAsFile();
 ```
+
+## Migration Guide
+
+### From 3.0.0 to 4.0.0
+
+* The `WebImagePicker` class has been removed. Use methods from `ImagePickerWeb` class instead.
+* `getImageInfo` and `getVideoInfo` are now methods and not getters. Use them like `ImagePickerWeb.getImageInfo()` and `ImagePickerWeb.getVideoInfo()`.
