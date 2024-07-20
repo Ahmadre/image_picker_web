@@ -298,7 +298,8 @@ class ImagePickerWeb {
 
 extension on web.File {
   Future<Uint8List> asBytes() async {
-    final bytesFile = Completer<List<int>>();
+    // final bytesFile = Completer<List<int>>();
+    final bytesFile = Completer<Uint8List>();
     final reader = web.FileReader();
     reader
       ..addEventListener(
@@ -324,6 +325,6 @@ extension on web.File {
       //   },
       // );
       ..readAsArrayBuffer(this);
-    return Uint8List.fromList(await bytesFile.future);
+    return bytesFile.future;
   }
 }

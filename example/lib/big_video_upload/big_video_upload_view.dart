@@ -16,21 +16,22 @@ class BigVideoUploadView extends StatefulWidget {
 class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   VideoPlayerController? _controller;
 
-  Future<void> _createVideo(Uint8List bytes) async {
-    final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
-    final url = web.URL.createObjectURL(blob);
+  Future<void> _createVideo(web.File file) async {
+    // final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
+    final url = web.URL.createObjectURL(file);
     // final url = html.Url.createObjectUrlFromBlob(blob);
     _controller = VideoPlayerController.networkUrl(Uri.parse(url));
+
     await _controller?.initialize();
     setState(() {});
   }
 
-  Future<Uint8List> _load(web.File file) async {
-    final reader = web.FileReader();
-    reader.readAsArrayBuffer(file);
-    await reader.onLoadEnd.first;
-    reader.onLoadEnd;
-    return reader.result as Uint8List;
+  Future<web.File> _load(web.File file) async {
+    // final reader = web.FileReader()..readAsArrayBuffer(file);
+    // await reader.onLoadEnd.first;
+    // return (reader.result as JSArrayBuffer).toDart.asUint8List();
+    // return reader.result as JSArrayBuffer;
+    return file;
   }
 
   Future<void> _pickAndLoadVideo() async {

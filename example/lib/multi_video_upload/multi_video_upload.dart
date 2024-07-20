@@ -1,8 +1,4 @@
-// import 'dart:html' as html;
-import 'dart:js_interop';
-
 import 'package:web/web.dart' as web;
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -18,10 +14,10 @@ class MultiVideoUploadView extends StatefulWidget {
 class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
   final _controllers = <VideoPlayerController>[];
 
-  Future<void> _createVideos(List<Uint8List> bytesList) async {
+  Future<void> _createVideos(List<web.File> bytesList) async {
     for (final bytes in bytesList) {
-      final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
-      final url = web.URL.createObjectURL(blob);
+      // final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
+      final url = web.URL.createObjectURL(bytes);
       final controller = VideoPlayerController.networkUrl(Uri.parse(url));
       await controller.initialize();
       _controllers.add(controller);
@@ -29,13 +25,15 @@ class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
     setState(() {});
   }
 
-  Future<Uint8List> _load(web.File file) async {
-    final reader = web.FileReader();
-    reader.readAsArrayBuffer(file);
-    await reader.onLoadEnd.first;
-    // await reader.onLoad.first;
-    reader.onLoadEnd;
-    return reader.result as Uint8List;
+  Future<web.File> _load(web.File file) async {
+    // final reader = web.FileReader();
+    // reader.readAsArrayBuffer(file);
+    // await reader.onLoadEnd.first;
+    // // await reader.onLoad.first;
+    // reader.onLoadEnd;
+
+    // return reader.result as JSArrayBuffer;
+    return file;
   }
 
   Future<void> _pickAndLoadVideos() async {
