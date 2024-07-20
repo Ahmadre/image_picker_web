@@ -3,13 +3,13 @@ library image_picker_web;
 import 'dart:async';
 import 'dart:js_interop';
 import 'dart:typed_data';
-// import 'dart:html' as html;
-import 'package:web/web.dart' as web;
-import 'dart:js_util' as js_util;
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:image_picker_web/src/models/media_info.dart';
+// import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 
 export 'src/models/media_info.dart';
 
