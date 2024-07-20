@@ -1,4 +1,7 @@
-import 'dart:html' as html;
+// import 'dart:html' as html;
+import 'dart:js_interop';
+
+import 'package:web/web.dart' as web;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -17,8 +20,8 @@ class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
 
   Future<void> _createVideos(List<Uint8List> bytesList) async {
     for (final bytes in bytesList) {
-      final blob = html.Blob([bytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
+      final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
+      final url = web.URL.createObjectURL(blob);
       final controller = VideoPlayerController.networkUrl(Uri.parse(url));
       await controller.initialize();
       _controllers.add(controller);
@@ -26,10 +29,11 @@ class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
     setState(() {});
   }
 
-  Future<Uint8List> _load(html.File file) async {
-    final reader = html.FileReader();
+  Future<Uint8List> _load(web.File file) async {
+    final reader = web.FileReader();
     reader.readAsArrayBuffer(file);
-    await reader.onLoad.first;
+    await reader.onLoadEnd.first;
+    // await reader.onLoad.first;
     reader.onLoadEnd;
     return reader.result as Uint8List;
   }

@@ -1,4 +1,5 @@
-import 'dart:html' as html;
+import 'dart:js_interop';
+import 'package:web/web.dart' as web;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -16,17 +17,18 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   VideoPlayerController? _controller;
 
   Future<void> _createVideo(Uint8List bytes) async {
-    final blob = html.Blob([bytes]);
-    final url = html.Url.createObjectUrlFromBlob(blob);
+    final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
+    final url = web.URL.createObjectURL(blob);
+    // final url = html.Url.createObjectUrlFromBlob(blob);
     _controller = VideoPlayerController.networkUrl(Uri.parse(url));
     await _controller?.initialize();
     setState(() {});
   }
 
-  Future<Uint8List> _load(html.File file) async {
-    final reader = html.FileReader();
+  Future<Uint8List> _load(web.File file) async {
+    final reader = web.FileReader();
     reader.readAsArrayBuffer(file);
-    await reader.onLoad.first;
+    await reader.onLoadEnd.first;
     reader.onLoadEnd;
     return reader.result as Uint8List;
   }

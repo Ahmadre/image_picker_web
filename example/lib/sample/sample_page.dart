@@ -43,7 +43,7 @@ class _SamplePageState extends State<SamplePage> {
   Future<void> _getImgFile() async {
     final infos = await ImagePickerWeb.getImageAsFile();
     setState(() => _imageInfo =
-        'Name: ${infos?.name}\nRelative Path: ${infos?.relativePath}');
+        'Name: ${infos?.name}\nRelative Path: ${infos?.webkitRelativePath}');
   }
 
   Future<void> _getImgInfo() async {

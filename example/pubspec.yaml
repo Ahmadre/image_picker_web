@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   video_player: ^2.7.0
+  web: ^1.0.0
 
 dev_dependencies:
   flutter_test:
