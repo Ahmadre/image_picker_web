@@ -1,8 +1,7 @@
-import 'package:web/web.dart' as web;
-
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:video_player/video_player.dart';
+import 'package:web/web.dart' as web;
 
 class MultiVideoUploadView extends StatefulWidget {
   const MultiVideoUploadView({super.key});
@@ -14,34 +13,22 @@ class MultiVideoUploadView extends StatefulWidget {
 class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
   final _controllers = <VideoPlayerController>[];
 
-  Future<void> _createVideos(List<web.File> bytesList) async {
-    for (final bytes in bytesList) {
-      // final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
-      final url = web.URL.createObjectURL(bytes);
-      final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+  Future<void> _createVideos(List<web.File> files) async {
+    for (final file in files) {
+      final String url = web.URL.createObjectURL(file);
+      final VideoPlayerController controller =
+          VideoPlayerController.networkUrl(Uri.parse(url));
       await controller.initialize();
       _controllers.add(controller);
     }
     setState(() {});
   }
 
-  Future<web.File> _load(web.File file) async {
-    // final reader = web.FileReader();
-    // reader.readAsArrayBuffer(file);
-    // await reader.onLoadEnd.first;
-    // // await reader.onLoad.first;
-    // reader.onLoadEnd;
-
-    // return reader.result as JSArrayBuffer;
-    return file;
-  }
-
   Future<void> _pickAndLoadVideos() async {
     setState(_disposeControllers);
     final files = await ImagePickerWeb.getMultiVideosAsFile();
     if (files != null) {
-      final bytesList = await Future.wait(files.map(_load));
-      await _createVideos(bytesList);
+      await _createVideos(files);
     }
   }
 
@@ -65,7 +52,7 @@ class _MultiVideoUploadViewState extends State<MultiVideoUploadView> {
               ),
             ElevatedButton(
               onPressed: _pickAndLoadVideos,
-              child: Text('Pick videos'),
+              child: const Text('Pick videos'),
             ),
           ],
         ),

@@ -1,13 +1,10 @@
-import 'dart:js_interop';
-import 'package:web/web.dart' as web;
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:video_player/video_player.dart';
+import 'package:web/web.dart' as web;
 
 class BigVideoUploadView extends StatefulWidget {
-  const BigVideoUploadView({Key? key}) : super(key: key);
+  const BigVideoUploadView({super.key});
 
   @override
   State<BigVideoUploadView> createState() => _BigVideoUploadViewState();
@@ -17,28 +14,17 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
   VideoPlayerController? _controller;
 
   Future<void> _createVideo(web.File file) async {
-    // final blob = web.Blob(bytes.map((int byte) => byte.toJS).toList().toJS);
     final url = web.URL.createObjectURL(file);
-    // final url = html.Url.createObjectUrlFromBlob(blob);
     _controller = VideoPlayerController.networkUrl(Uri.parse(url));
 
     await _controller?.initialize();
     setState(() {});
   }
 
-  Future<web.File> _load(web.File file) async {
-    // final reader = web.FileReader()..readAsArrayBuffer(file);
-    // await reader.onLoadEnd.first;
-    // return (reader.result as JSArrayBuffer).toDart.asUint8List();
-    // return reader.result as JSArrayBuffer;
-    return file;
-  }
-
   Future<void> _pickAndLoadVideo() async {
     final file = await ImagePickerWeb.getVideoAsFile();
     if (file != null) {
-      final bytes = await _load(file);
-      await _createVideo(bytes);
+      await _createVideo(file);
     }
   }
 
@@ -70,7 +56,6 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (controller != null && controller.value.isInitialized)
               AspectRatio(
@@ -79,7 +64,7 @@ class _BigVideoUploadViewState extends State<BigVideoUploadView> {
               ),
             ElevatedButton(
               onPressed: _pickAndLoadVideo,
-              child: Text('Load Video with FileReader'),
+              child: const Text('Load Video with FileReader'),
             ),
           ],
         ),
