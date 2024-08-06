@@ -1,14 +1,24 @@
 library image_picker_web;
 
 import 'dart:async';
-import 'dart:html' as html;
+import 'dart:js_interop';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:image_picker_web/src/models/media_info.dart';
+import 'package:web/web.dart' as web;
 
 export 'src/models/media_info.dart';
+
+/// Adds a `toList` method to [web.FileList] objects.
+extension WebFileListToDartList on web.FileList {
+  /// Converts a [web.FileList] into a [List] of [web.File].
+  ///
+  /// This method makes a copy.
+  List<web.File> toList() => [for (int i = 0; i < length; i++) item(i)!];
+}
 
 class ImagePickerWeb {
   const ImagePickerWeb._();
@@ -35,19 +45,29 @@ class ImagePickerWeb {
     });
   }
 
-  static Future<html.File?> _pickFile(String type) async {
-    final completer = Completer<List<html.File>?>();
-    final input = html.FileUploadInputElement()..accept = '$type/*';
+  static Future<web.File?> _pickFile(String type) async {
+    final completer = Completer<List<web.File>?>();
+
+    final input = web.HTMLInputElement()
+      ..accept = '$type/*'
+      ..type = 'file';
 
     bool changeEventTriggered = false;
-    void changeEventListener(html.Event e) {
+    void changeEventListener(web.Event e) {
       if (changeEventTriggered) return;
       changeEventTriggered = true;
+      final web.FileList? files = input.files;
+      if (files == null) return completer.complete(null);
 
-      final files = input.files ?? [];
-      final resultFuture = files.map<Future<html.File>>((file) async {
-        final reader = html.FileReader()..readAsDataUrl(file);
-        reader.onError.listen(completer.completeError);
+      final resultFuture = files.toList().map<Future<web.File>>((file) async {
+        web.FileReader()
+          ..readAsDataURL(file)
+          ..addEventListener(
+            'error',
+            (JSAny event) {
+              completer.completeError('Error reading file: $event');
+            }.toJS,
+          );
         return file;
       });
 
@@ -56,8 +76,8 @@ class ImagePickerWeb {
 
     // Cancel event management inspired by:
     // https://github.com/miguelpruivo/flutter_file_picker/blob/master/lib/src/file_picker_web.dart
-    void cancelledEventListener(html.Event e) {
-      html.window.removeEventListener('focus', cancelledEventListener);
+    void cancelledEventListener(web.Event e) {
+      web.window.removeEventListener('focus', cancelledEventListener.toJS);
 
       // This listener is called before the input changed event,
       // and the `uploadInput.files` value is still null
@@ -71,15 +91,15 @@ class ImagePickerWeb {
     }
 
     input.onChange.listen(changeEventListener);
-    input.addEventListener('change', changeEventListener);
+    input.addEventListener('change', changeEventListener.toJS);
 
     // Listen focus event for cancelled
-    html.window.addEventListener('focus', cancelledEventListener);
+    web.window.addEventListener('focus', cancelledEventListener.toJS);
 
     input.click();
 
     // Need to append on mobile Safari.
-    html.document.body?.append(input);
+    web.document.body?.append(input);
 
     final results = await completer.future;
     if (results == null || results.isEmpty) return null;
@@ -89,12 +109,12 @@ class ImagePickerWeb {
   static Future<Map<String, dynamic>?> _pickFileInfo(String type) async {
     final file = await ImagePickerWeb._pickFile(type);
     if (file == null) return null;
-    final reader = html.FileReader()..readAsDataUrl(file);
-    await reader.onLoad.first;
+    final reader = web.FileReader()..readAsDataURL(file);
+    await reader.onLoadEnd.first;
     final encoded = reader.result;
     if (encoded is! String) return null;
-    final stripped =
-        encoded.replaceFirst(RegExp('data:$type/[^;]+;base64,'), '');
+    final stripped = (encoded! as String)
+        .replaceFirst(RegExp('data:$type/[^;]+;base64,'), '');
     final fileName = file.name;
     return <String, dynamic>{
       'name': fileName,
@@ -104,21 +124,29 @@ class ImagePickerWeb {
   }
 
   /// source: https://stackoverflow.com/a/59420655/9942346
-  static Future<List<html.File>?> _pickMultiFiles(String type) async {
-    final completer = Completer<List<html.File>?>();
-    final input = html.FileUploadInputElement()
-      ..multiple = true
-      ..accept = '$type/*';
+  static Future<List<web.File>?> _pickMultiFiles(String type) async {
+    final completer = Completer<List<web.File>?>();
+    final input = web.HTMLInputElement()
+      ..accept = '$type/*'
+      ..type = 'file'
+      ..multiple = true;
 
     var changeEventTriggered = false;
-    void changeEventListener(html.Event e) {
+    void changeEventListener(web.Event e) {
       if (changeEventTriggered) return;
       changeEventTriggered = true;
 
-      final files = input.files ?? [];
-      final resultsFutures = files.map<Future<html.File>>((file) async {
-        final reader = html.FileReader()..readAsDataUrl(file);
-        reader.onError.listen(completer.completeError);
+      final web.FileList? files = input.files;
+      if (files == null) return completer.complete(null);
+      final resultsFutures = files.toList().map<Future<web.File>>((file) async {
+        web.FileReader()
+          ..readAsDataURL(file)
+          ..addEventListener(
+            'error',
+            (JSAny event) {
+              completer.completeError('Error reading file: $event');
+            }.toJS,
+          );
         return file;
       });
       Future.wait(resultsFutures).then(completer.complete);
@@ -126,8 +154,8 @@ class ImagePickerWeb {
 
     // Cancel event management inspired by:
     // https://github.com/miguelpruivo/flutter_file_picker/blob/master/lib/src/file_picker_web.dart
-    void cancelledEventListener(html.Event e) {
-      html.window.removeEventListener('focus', cancelledEventListener);
+    void cancelledEventListener(web.Event e) {
+      web.window.removeEventListener('focus', cancelledEventListener.toJS);
 
       // This listener is called before the input changed event,
       // and the `uploadInput.files` value is still null
@@ -141,15 +169,15 @@ class ImagePickerWeb {
     }
 
     input.onChange.listen(changeEventListener);
-    input.addEventListener('change', changeEventListener);
+    input.addEventListener('change', changeEventListener.toJS);
 
     // Listen focus event for cancelled
-    html.window.addEventListener('focus', cancelledEventListener);
+    web.window.addEventListener('focus', cancelledEventListener.toJS);
 
     input.click();
 
     // Need to append on mobile Safari.
-    html.document.body?.append(input);
+    web.document.body?.append(input);
     final results = await completer.future;
     if (results == null || results.isEmpty) return null;
     return results;
@@ -158,7 +186,7 @@ class ImagePickerWeb {
   /// Picker that close after selecting 1 image and return a [Uint8List] of the
   /// selected image.
   static Future<Uint8List?> getImageAsBytes() async {
-    final file = await ImagePickerWeb._pickFile('image');
+    final web.File? file = await ImagePickerWeb._pickFile('image');
     return file?.asBytes();
   }
 
@@ -171,9 +199,9 @@ class ImagePickerWeb {
         : null;
   }
 
-  /// Picker that close after selecting 1 image and return a [html.File] of the
+  /// Picker that close after selecting 1 image and return a [web.File] of the
   /// selected image.
-  static Future<html.File?> getImageAsFile() {
+  static Future<web.File?> getImageAsFile() {
     return ImagePickerWeb._pickFile('image');
   }
 
@@ -191,10 +219,9 @@ class ImagePickerWeb {
   static Future<List<Uint8List>?> getMultiImagesAsBytes() async {
     final images = await _pickMultiFiles('image');
     if (images == null) return null;
-    final files = <Uint8List>[];
-    for (final img in images) {
-      files.add(await img.asBytes());
-    }
+    final files = <Uint8List>[
+      for (final img in images) await img.asBytes(),
+    ];
     return files.isEmpty ? null : files;
   }
 
@@ -203,17 +230,16 @@ class ImagePickerWeb {
   static Future<List<Image>?> getMultiImagesAsWidget() async {
     final images = await _pickMultiFiles('image');
     if (images == null) return null;
-    final files = <Uint8List>[];
-    for (final img in images) {
-      files.add(await img.asBytes());
-    }
+    final files = <Uint8List>[
+      for (final img in images) await img.asBytes(),
+    ];
     if (files.isEmpty) return null;
     return files.map<Image>(Image.memory).toList();
   }
 
-  /// Picker that allows multi-image selection and return a [html.File] list of
+  /// Picker that allows multi-image selection and return a [web.File] list of
   /// the selected images.
-  static Future<List<html.File>?> getMultiImagesAsFile() {
+  static Future<List<web.File>?> getMultiImagesAsFile() {
     return _pickMultiFiles('image');
   }
 
@@ -224,9 +250,9 @@ class ImagePickerWeb {
     return video?.asBytes();
   }
 
-  /// Picker that close after selecting 1 video and return a [html.File] of the
+  /// Picker that close after selecting 1 video and return a [web.File] of the
   /// selected video.
-  static Future<html.File?> getVideoAsFile() => _pickFile('video');
+  static Future<web.File?> getVideoAsFile() => _pickFile('video');
 
   /// Help to retrieve further video's informations about your picked source.
   ///
@@ -249,31 +275,30 @@ class ImagePickerWeb {
     return files.isEmpty ? null : files;
   }
 
-  /// Picker that allows multi-video selection and return a [html.File] list of
+  /// Picker that allows multi-video selection and return a [web.File] list of
   /// the selected videos.
-  static Future<List<html.File>?> getMultiVideosAsFile() {
+  static Future<List<web.File>?> getMultiVideosAsFile() {
     return _pickMultiFiles('video');
   }
 }
 
-typedef _ByteResult = FutureOr<List<int>>;
-
-extension on html.File {
+extension on web.File {
   Future<Uint8List> asBytes() async {
-    final bytesFile = Completer<List<int>>();
-    final reader = html.FileReader();
-    reader.onLoad.listen(
-      (_) {
-        final result = reader.result;
-        if (result is! _ByteResult?) {
-          bytesFile.completeError('Result is not a byte result');
-          return;
-        }
-
-        bytesFile.complete(result);
-      },
-    );
-    reader.readAsArrayBuffer(this);
-    return Uint8List.fromList(await bytesFile.future);
+    final bytesFile = Completer<Uint8List>();
+    final reader = web.FileReader();
+    reader
+      ..addEventListener(
+        'load',
+        (JSAny event) {
+          final result = reader.result;
+          if (result is! ByteBuffer) {
+            bytesFile.completeError('Result is not a byte result');
+            return;
+          }
+          bytesFile.complete((result! as ByteBuffer).asUint8List());
+        }.toJS,
+      )
+      ..readAsArrayBuffer(this);
+    return bytesFile.future;
   }
 }

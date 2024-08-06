@@ -13,7 +13,7 @@ enum PageStatus { loading, error, loaded }
 
 class ImagePickerWidget extends StatefulWidget {
   @override
-  _ImagePickerWidgetState createState() => _ImagePickerWidgetState();
+  State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
@@ -23,10 +23,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Photo History')),
+      appBar: AppBar(title: const Text('Photo History')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
             height: 100,
@@ -37,16 +36,17 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 if (index == 0) {
                   return _buildAddPhoto();
                 }
-                var image = _photos[index - 1];
+                final image = _photos[index - 1];
                 return Stack(
                   children: <Widget>[
                     InkWell(
                       child: Container(
-                          margin: EdgeInsets.all(5),
-                          height: 100,
-                          width: 100,
-                          color: kLightGray,
-                          child: image),
+                        margin: const EdgeInsets.all(5),
+                        height: 100,
+                        width: 100,
+                        color: kLightGray,
+                        child: image,
+                      ),
                     ),
                   ],
                 );
@@ -55,12 +55,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
           ),
           if (_pageStatus == PageStatus.loaded)
             Container(
-              margin: EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
-            )
+            ),
         ],
       ),
     );
@@ -69,24 +69,23 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   InkWell _buildAddPhoto() {
     if (_pageStatus == PageStatus.loading) {
       return InkWell(
-        onTap: () => null,
         child: Container(
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           height: 100,
           width: 100,
           color: kDarkGray,
-          child: Center(child: Text('Please wait..')),
+          child: const Center(child: Text('Please wait..')),
         ),
       );
     } else {
       return InkWell(
         onTap: () => _onAddPhotoClicked(context),
         child: Container(
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           height: 100,
           width: 100,
           color: kDarkGray,
-          child: Center(
+          child: const Center(
             child: Icon(
               Icons.add_to_photos,
               color: kLightGray,
@@ -103,7 +102,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     });
 
     final image = await ImagePickerWeb.getImageAsWidget();
-    print(image);
 
     if (image != null) {
       setState(() {

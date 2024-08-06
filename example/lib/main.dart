@@ -10,11 +10,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(title: const Text('Home')),
       body: Center(
         child: SeparatedColumn(
           mainAxisAlignment: MainAxisAlignment.center,
-          separator: SizedBox(height: 8),
+          separator: const SizedBox(height: 8),
           children: [
             _Button(
               label: 'Sample 1',
@@ -24,11 +24,11 @@ class HomePage extends StatelessWidget {
               label: 'Photo History',
               page: PhotosHistoryAddPage(),
             ),
-            _Button(
+            const _Button(
               label: 'Big Video Upload',
               page: BigVideoUploadView(),
             ),
-            _Button(
+            const _Button(
               page: MultiVideoUploadView(),
               label: 'Upload Multi Videos',
             ),
@@ -53,7 +53,7 @@ class _Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => page),
+        MaterialPageRoute<Widget>(builder: (_) => page),
       ),
       child: Text(label),
     );
