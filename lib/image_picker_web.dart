@@ -17,7 +17,10 @@ extension WebFileListToDartList on web.FileList {
   /// Converts a [web.FileList] into a [List] of [web.File].
   ///
   /// This method makes a copy.
-  List<web.File> toList() => [for (int i = 0; i < length; i++) item(i)!];
+  List<web.File> toList() => [
+        for (int i = 0; i < length; i++)
+          if (item(i) case final item?) item,
+      ];
 }
 
 class ImagePickerWeb {
@@ -111,16 +114,19 @@ class ImagePickerWeb {
     if (file == null) return null;
     final reader = web.FileReader()..readAsDataURL(file);
     await reader.onLoadEnd.first;
-    final encoded = reader.result;
-    if (encoded is! String) return null;
-    final stripped = (encoded! as String)
-        .replaceFirst(RegExp('data:$type/[^;]+;base64,'), '');
-    final fileName = file.name;
-    return <String, dynamic>{
-      'name': fileName,
-      'data': stripped,
-      'data_scheme': encoded,
-    };
+
+    if (reader.result case final String encoded) {
+      final stripped =
+          encoded.replaceFirst(RegExp('data:$type/[^;]+;base64,'), '');
+      final fileName = file.name;
+      return <String, dynamic>{
+        'name': fileName,
+        'data': stripped,
+        'data_scheme': encoded,
+      };
+    }
+
+    return null;
   }
 
   /// source: https://stackoverflow.com/a/59420655/9942346
@@ -290,12 +296,11 @@ extension on web.File {
       ..addEventListener(
         'load',
         (JSAny event) {
-          final result = reader.result;
-          if (result is! ByteBuffer) {
-            bytesFile.completeError('Result is not a byte result');
+          if (reader.result case final ByteBuffer result) {
+            bytesFile.complete(result.asUint8List());
             return;
           }
-          bytesFile.complete((result! as ByteBuffer).asUint8List());
+          bytesFile.completeError('Result is not a byte result');
         }.toJS,
       )
       ..readAsArrayBuffer(this);
