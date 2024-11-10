@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker_web_example/big_video_upload/big_video_upload_view.dart';
+import 'package:image_picker_web_example/issue_25/issue_25.dart';
 import 'package:image_picker_web_example/multi_video_upload/multi_video_upload.dart';
 import 'package:image_picker_web_example/photo_history/photo_history_add_view.dart';
 import 'package:image_picker_web_example/sample/sample_page.dart';
@@ -31,6 +32,10 @@ class HomePage extends StatelessWidget {
             const _Button(
               page: MultiVideoUploadView(),
               label: 'Upload Multi Videos',
+            ),
+            const _Button(
+              label: 'Issue #25',
+              page: Issue25View(),
             ),
           ],
         ),
